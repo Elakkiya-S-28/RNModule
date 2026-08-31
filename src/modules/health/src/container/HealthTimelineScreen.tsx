@@ -13,6 +13,7 @@ import { healthService } from '../services/healthApi';
 import { HealthRecord } from '../types/health';
 import { HealthRecordRow } from '../component/HealthRecordRow';
 import { HealthFilterModal } from '../component/HealthFilterModal';
+import { AppIcon } from '../../../../core/ui/AppIcon';
 const KIND_FILTERS = [
   'lab-report',
   'prescription',
@@ -77,12 +78,15 @@ export function HealthTimelineScreen({ onRecordPress }: Props) {
               { borderColor: c.border, opacity: pressed ? 0.85 : 1 },
             ]}
           >
-            <Text style={[styles.filterText, { color: c.textSecondary }]}>⚙ Filter</Text>
+            <View style={styles.filterBtnContent}>
+              <AppIcon name="filter" size={14} color="textSecondary" />
+              <Text style={[styles.filterText, { color: c.textSecondary }]}>Filter</Text>
+            </View>
           </Pressable>
         }
       />
       <View style={styles.searchWrap}>
-        <Text style={{ color: c.textMuted }}>🔍</Text>
+        <AppIcon name="search" size={16} color="textMuted" />
         <TextInput
           value={searchText}
           onChangeText={setSearchText}
@@ -142,7 +146,7 @@ export function HealthTimelineScreen({ onRecordPress }: Props) {
           ListEmptyComponent={
             recordCount === 0 ? (
               <EmptyState
-                icon="🩺"
+                icon="medkit"
                 title="No records found"
                 message="Adjust search or filters to see your health timeline."
               />
@@ -203,6 +207,7 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
   },
   filterText: { fontSize: 13, fontFamily: 'Inter Medium' },
+  filterBtnContent: { flexDirection: 'row', alignItems: 'center', gap: 5 },
   content: { paddingHorizontal: 16, paddingBottom: 32 },
   footer: { textAlign: 'center', marginTop: 8, fontSize: 11, fontFamily: 'Inter' },
   skeleton: { paddingHorizontal: 16, paddingTop: 8 },

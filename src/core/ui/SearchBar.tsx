@@ -2,6 +2,7 @@ import React from 'react';
 import { Pressable, StyleSheet, Text, TextInput, TextInputProps, View } from 'react-native';
 import { useThemeStore } from '../theme/themeStore';
 import { type as fontType } from '../theme/fonts';
+import { AppIcon } from './AppIcon';
 
 interface Props extends TextInputProps {
   onClear?: () => void;
@@ -16,7 +17,7 @@ export function SearchBar({ onClear, clearLabel = 'Clear', testID, style, ...res
   const showClear = onClear && value.length > 0;
   return (
     <View style={[styles.wrap, { backgroundColor: c.surface, borderColor: c.border }, style]}>
-      <Text style={[styles.icon, { color: c.textMuted }]}>⌕</Text>
+      <AppIcon name="search" size={18} color="textMuted" style={styles.icon} />
       <TextInput
         testID={testID}
         placeholderTextColor={c.textMuted}
@@ -46,7 +47,7 @@ const styles = StyleSheet.create({
     borderRadius: 14,
     paddingHorizontal: 12,
   },
-  icon: { fontSize: 18, marginRight: 8 },
+  icon: { marginRight: 8 },
   input: { ...fontType.body, flex: 1, paddingVertical: 12, fontSize: 15 },
   clearBtn: { marginLeft: 8, paddingVertical: 6 },
   clearText: { ...fontType.label },

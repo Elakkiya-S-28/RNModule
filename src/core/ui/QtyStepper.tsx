@@ -3,6 +3,7 @@ import { Animated, Pressable, StyleSheet, Text, View } from 'react-native';
 import { useThemeStore } from '../theme/themeStore';
 import { type as fontType } from '../theme/fonts';
 import { usePop } from '../util/motion';
+import { AppIcon } from './AppIcon';
 
 interface Props {
   quantity: number;
@@ -35,7 +36,7 @@ export function QtyStepper({ quantity, min = 1, max = 99, onChange }: Props) {
           { backgroundColor: c.surfaceAlt, opacity: atMin ? 0.4 : pressed ? 0.7 : 1 },
         ]}
       >
-        <Text style={[styles.btnText, { color: c.text }]}>−</Text>
+        <AppIcon name="remove" size={16} color="text" />
       </Pressable>
       <AnimatedQty pop={pop} quantity={quantity} />
       <Pressable
@@ -49,7 +50,7 @@ export function QtyStepper({ quantity, min = 1, max = 99, onChange }: Props) {
           { backgroundColor: c.primary, opacity: atMax ? 0.4 : pressed ? 0.85 : 1 },
         ]}
       >
-        <Text style={[styles.btnText, { color: c.textInverse }]}>+</Text>
+        <AppIcon name="add" size={16} color="textInverse" />
       </Pressable>
     </View>
   );

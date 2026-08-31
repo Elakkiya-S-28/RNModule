@@ -14,6 +14,7 @@ import { formatCompact } from '../../../../core/util/format';
 import { useIsOnline } from '../../../../core/api/connectivity';
 import { type as fontType } from '../../../../core/theme/fonts';
 import { staggerDelay } from '../../../../core/util/motion';
+import { AppIcon } from '../../../../core/ui/AppIcon';
 
 interface Props {
   onDoctorPress: (doctor: Doctor) => void;
@@ -100,14 +101,23 @@ export function DoctorListScreen({ onDoctorPress, onUpcomingPress }: Props) {
             },
           ]}
         >
-          <Text
-            style={[
-              styles.filterText,
-              { color: activeFilterCount > 0 ? c.textInverse : c.textSecondary },
-            ]}
-          >
-            ⚙{activeFilterCount > 0 ? ` ${activeFilterCount}` : ''}
-          </Text>
+          <View style={styles.filterBtnContent}>
+            <AppIcon
+              name="filter"
+              size={16}
+              color={activeFilterCount > 0 ? 'textInverse' : 'textSecondary'}
+            />
+            {activeFilterCount > 0 ? (
+              <Text
+                style={[
+                  styles.filterText,
+                  { color: activeFilterCount > 0 ? c.textInverse : c.textSecondary },
+                ]}
+              >
+                {activeFilterCount}
+              </Text>
+            ) : null}
+          </View>
         </Pressable>
       </View>
       <View style={styles.summaryRow}>
@@ -169,6 +179,7 @@ export function DoctorListScreen({ onDoctorPress, onUpcomingPress }: Props) {
           }
           ListEmptyComponent={
             <EmptyState
+              icon="search"
               title="No doctors found"
               message="Try adjusting your search or clearing filters."
             />
@@ -201,6 +212,7 @@ const styles = StyleSheet.create({
     marginLeft: 8,
   },
   filterText: { ...fontType.label, fontSize: 14 },
+  filterBtnContent: { flexDirection: 'row', alignItems: 'center', gap: 5 },
   summaryRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',

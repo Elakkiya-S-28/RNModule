@@ -3,6 +3,7 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useThemeStore } from '../theme/themeStore';
 import { type as fontType } from '../theme/fonts';
+import { AppIcon } from './AppIcon';
 
 export const APP_NAME = 'Ayurvedic Super App';
 
@@ -36,7 +37,7 @@ export function AppBar({ title, subtitle, onBack, right }: Props) {
               { backgroundColor: c.surface, borderColor: c.border, opacity: pressed ? 0.8 : 1 },
             ]}
           >
-            <Text style={[styles.backIcon, { color: c.text }]}>‹</Text>
+            <AppIcon name="chevronBack" size={20} color="text" />
           </Pressable>
         ) : (
           <View style={styles.backBtnSpacer} />

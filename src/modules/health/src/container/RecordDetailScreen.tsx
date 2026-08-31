@@ -6,6 +6,7 @@ import { Badge } from '../../../../core/ui/Badge';
 import { Card } from '../../../../core/ui/Card';
 import { healthService } from '../services/healthApi';
 import { HealthRecord } from '../types/health';
+import { AppIcon } from '../../../../core/ui/AppIcon';
 interface Props {
   record: HealthRecord | null;
   onBack: () => void;
@@ -74,7 +75,11 @@ export function RecordDetailScreen({ record, onBack }: Props) {
             <View style={styles.attachRow}>
               {record.attachments.map(a => (
                 <View key={a.id} style={[styles.attach, { backgroundColor: c.surface, borderColor: c.border }]}>
-                  <Text style={{ fontSize: 30 }}>{a.type === 'image' ? '🖼️' : '📄'}</Text>
+                  <AppIcon
+                    name={a.type === 'image' ? 'image' : 'document'}
+                    size={30}
+                    color="primary"
+                  />
                   <Text numberOfLines={1} style={{ color: c.textSecondary, fontSize: 11, marginTop: 4 }}>
                     {a.name}
                   </Text>

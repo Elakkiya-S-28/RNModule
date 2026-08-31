@@ -1,19 +1,19 @@
 import React from 'react';
-import { Text } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { MainTabParamList } from './types';
 import { ConsultationsNavigator } from '../../modules/consultations/src/navigation/ConsultationsNavigator';
 import { ShopNavigator } from '../../modules/shop/src/navigation/ShopNavigator';
 import { HealthNavigator } from '../../modules/health/src/navigation/HealthNavigator';
 import { useThemeStore } from '../../core/theme/themeStore';
+import { AppIcon, AppIconName } from '../../core/ui/AppIcon';
 import { type as fontType } from '../../core/theme/fonts';
 
 const Tab = createBottomTabNavigator<MainTabParamList>();
 
-const TAB_ICONS: Record<keyof MainTabParamList, string> = {
-  Consultations: '🩺',
-  Shop: '🛍️',
-  Health: '📁',
+const TAB_ICONS: Record<keyof MainTabParamList, AppIconName> = {
+  Consultations: 'calendar',
+  Shop: 'bagHandle',
+  Health: 'pulse',
 };
 
 export function MainTabs() {
@@ -29,9 +29,11 @@ export function MainTabs() {
         tabBarLabelStyle: { ...fontType.label, fontSize: 11 },
         tabBarIconStyle: { marginTop: 2 },
         tabBarIcon: ({ focused }) => (
-          <Text style={{ fontSize: 18, opacity: focused ? 1 : 0.55 }}>
-            {TAB_ICONS[route.name]}
-          </Text>
+          <AppIcon
+            name={TAB_ICONS[route.name]}
+            size={20}
+            color={focused ? 'tabBarActive' : 'tabBarInactive'}
+          />
         ),
         lazy: true,
       })}

@@ -14,6 +14,7 @@ import { shopService } from '../services/shopApi';
 import { getProductById } from '../services/productRepo';
 import { CartItem } from '../store/cartStore';
 import { Product } from '../types/shop';
+import { AppIcon } from '../../../../core/ui/AppIcon';
 
 interface Props {
   onBack: () => void;
@@ -62,7 +63,7 @@ export function CartScreen({ onBack }: Props) {
         renderItem={({ item: row }) => (
           <Card style={styles.rowCard}>
             <View style={[styles.thumb, { backgroundColor: c.surfaceAlt }]}>
-              <Text style={{ fontSize: 22 }}>🌿</Text>
+              <AppIcon name="leaf" size={22} color="secondary" />
             </View>
             <View style={styles.rowBody}>
               <Text numberOfLines={2} style={[styles.name, { color: c.text }]}>
@@ -95,7 +96,7 @@ export function CartScreen({ onBack }: Props) {
         )}
         ListEmptyComponent={
           <EmptyState
-            icon="🛒"
+            icon="cart"
             title="Your cart is empty"
             message="Add some Ayurvedic products to get started."
           />

@@ -6,6 +6,7 @@ import { Avatar } from '../../../../core/ui/Avatar';
 import { Badge } from '../../../../core/ui/Badge';
 import { formatCurrency } from '../../../../core/util/format';
 import { FadeInView, staggerDelay } from '../../../../core/util/motion';
+import { AppIcon } from '../../../../core/ui/AppIcon';
 interface Props {
   doctor: Doctor;
   onPress?: () => void;
@@ -43,12 +44,17 @@ export const DoctorCard = React.memo(function DoctorCard({ doctor, onPress, entr
           {doctor.hospital} · {doctor.city}
         </Text>
         <View style={styles.row}>
-          <Text style={{ color: c.warning, fontWeight: '700', fontSize: 13 }}>★ {doctor.rating.toFixed(1)}</Text>
+          <View style={styles.ratingWrap}>
+            <AppIcon name="star" size={12} color="warning" />
+            <Text style={{ color: c.warning, fontWeight: '700', fontSize: 13 }}>
+              {doctor.rating.toFixed(1)}
+            </Text>
+          </View>
           <Badge label={formatCurrency(doctor.consultationFee)} tone="primary" small />
           <Text style={[styles.reviews, { color: c.textMuted }]}>({doctor.reviewsCount})</Text>
         </View>
       </View>
-      <Text style={{ color: c.textMuted, marginLeft: 4 }}>›</Text>
+      <AppIcon name="chevronForward" size={16} color="textMuted" style={{ marginLeft: 4 }} />
     </Pressable>
     </FadeInView>
   );
@@ -66,6 +72,7 @@ const styles = StyleSheet.create({
   spec: { fontSize: 13, fontWeight: '600', marginTop: 2 },
   meta: { fontSize: 12, marginTop: 2 },
   row: { flexDirection: 'row', alignItems: 'center', marginTop: 6, gap: 8 },
+  ratingWrap: { flexDirection: 'row', alignItems: 'center', gap: 3 },
   reviews: { fontSize: 12 },
 });
 export default DoctorCard;

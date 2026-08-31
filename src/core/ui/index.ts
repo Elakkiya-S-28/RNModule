@@ -13,6 +13,9 @@ export { AppHeader } from './AppHeader';
 export { Chip, ChipRow } from './Chip';
 export { SearchBar } from './SearchBar';
 export { QtyStepper } from './QtyStepper';
+export { AppIcon } from './AppIcon';
+export type { AppIconName } from './AppIcon';
+
 export {
   SkeletonLoader,
   SkeletonBox,

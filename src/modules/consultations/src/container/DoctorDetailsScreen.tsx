@@ -13,6 +13,7 @@ import { consultationService } from '../services/consultationApi';
 import { useAppointmentsStore, isSlotBookedById } from '../store/appointmentsStore';
 import { Doctor, Slot } from '../types/ct';
 import { SlotGrid, DateStrip, buildDates } from '../component/SlotPicker';
+import { AppIcon } from '../../../../core/ui/AppIcon';
 
 interface Props {
   doctorId: string;
@@ -155,7 +156,11 @@ export function DoctorDetailsScreen({ doctorId, onBack, onBooked }: Props) {
 
         <View style={styles.statsRow}>
           <Stat label="Experience" value={`${doctor.experienceYears}y`} />
-          <Stat label="Rating" value={`★ ${doctor.rating.toFixed(1)}`} />
+          <Stat
+            label="Rating"
+            value={doctor.rating.toFixed(1)}
+            icon={<AppIcon name="star" size={12} color="warning" />}
+          />
           <Stat label="Reviews" value={`${doctor.reviewsCount}`} />
           <Stat label="Fee" value={formatCurrency(doctor.consultationFee)} />
         </View>        <View style={styles.section}>
@@ -202,12 +207,23 @@ function slotExpired(slot: Slot): boolean {
   return start <= Date.now();
 }
 
-function Stat({ label, value }: { label: string; value: string }) {
+function Stat({
+  label,
+  value,
+  icon,
+}: {
+  label: string;
+  value: string;
+  icon?: React.ReactNode;
+}) {
   const theme = useThemeStore(s => s.theme);
   const c = theme.colors;
   return (
     <View style={[styles.stat, { backgroundColor: c.surface, borderColor: c.border }]}>
-      <Text style={[styles.statValue, { color: c.text }]}>{value}</Text>
+      <View style={styles.statValueWrap}>
+        {icon}
+        <Text style={[styles.statValue, { color: c.text }]}>{value}</Text>
+      </View>
       <Text style={[styles.statLabel, { color: c.textMuted }]}>{label}</Text>
     </View>
   );
@@ -262,6 +278,7 @@ const styles = StyleSheet.create({
   hmeta: { fontSize: 12, marginTop: 2 },
   statsRow: { flexDirection: 'row', gap: 8, marginBottom: 4 },
   stat: { flex: 1, borderWidth: 1, borderRadius: 12, padding: 10, alignItems: 'center' },
+  statValueWrap: { flexDirection: 'row', alignItems: 'center', gap: 3 },
   statValue: { fontSize: 15, fontWeight: '700' },
   statLabel: { fontSize: 10, marginTop: 2 },
   section: { marginTop: 18 },

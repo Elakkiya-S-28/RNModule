@@ -100,24 +100,24 @@ const baseTypography = {
 };
 
 const brand = {
-  primary: '#1B4332',
-  primaryDark: '#081C15',
+  primary: '#0F766E',
+  primaryDark: '#0B544E',
   secondary: '#84A98C',
   accent: '#C59D5F',
 };
 
 const lightShadow = {
   soft: {
-    shadowColor: '#1B4332',
+    shadowColor: '#0F766E',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.06,
     shadowRadius: 8,
     elevation: 2,
   },
   card: {
-    shadowColor: '#12291F',
+    shadowColor: '#0F766E',
     shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.1,
+    shadowOpacity: 0.08,
     shadowRadius: 14,
     elevation: 3,
   },
@@ -149,12 +149,12 @@ export const lightTheme: AppTheme = {
     warning: '#B98A2F',
     info: '#3E7CB1',
 
-    background: '#FAF6EF',
+    background: '#F8FAF9',
     surface: '#FFFFFF',
     surfaceAlt: '#F1ECE1',
     border: '#E6DFD2',
 
-    text: '#1C2A24',
+    text: '#1F2937',
     textSecondary: '#55655D',
     textMuted: '#8A968E',
     textInverse: '#FFFFFF',
@@ -162,15 +162,15 @@ export const lightTheme: AppTheme = {
     offlineBg: '#F4ECDD',
     overlay: 'rgba(28, 42, 36, 0.45)',
     transparent: 'transparent',
-    rowHighlight: 'rgba(27, 67, 50, 0.06)',
+    rowHighlight: 'rgba(15, 118, 110, 0.06)',
 
     tabBarBg: '#FFFFFF',
-    tabBarActive: '#1B4332',
-    tabBarInactive: '#9AA69E',
+    tabBarActive: '#0F766E',
+    tabBarInactive: '#84A98C',
 
     bone: '#EAE4D8',
     boneHighlight: '#F7F3EA',
-    shadowPrimary: '#2F3E2A',
+    shadowPrimary: '#0F766E',
   },
   shadow: lightShadow,
   spacing: baseSpacing,

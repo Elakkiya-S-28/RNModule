@@ -6,6 +6,7 @@ import { ErrorBoundary } from './src/core/error/ErrorBoundary';
 import { ToastContainer } from './src/core/ui/ToastContainer';
 import { AppProviders } from './src/app/providers/AppProviders';
 import { useIsOnline } from './src/core/api/connectivity';
+import { AppIcon } from './src/core/ui/AppIcon';
 
 function App() {
   const sysScheme = useColorScheme();
@@ -40,8 +41,9 @@ function OfflineBanner() {
   if (online) return null;
   return (
     <View style={[styles.banner, { backgroundColor: c.offlineBg }]}>
-      <Text style={{ color: c.text, fontSize: 12, fontWeight: '600' }}>
-        📡 Offline — you can continue browsing. Changes will sync when you're back online.
+      <AppIcon name="cloudOffline" size={14} color="text" />
+      <Text style={{ color: c.text, fontSize: 12, fontWeight: '600', flexShrink: 1 }}>
+        Offline — you can continue browsing. Changes will sync when you're back online.
       </Text>
     </View>
   );
@@ -53,9 +55,12 @@ const styles = StyleSheet.create({
     top: 44,
     left: 0,
     right: 0,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 8,
     paddingHorizontal: 16,
     paddingVertical: 8,
-    alignItems: 'center',
   },
 });
 

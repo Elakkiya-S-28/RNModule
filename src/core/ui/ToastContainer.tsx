@@ -8,6 +8,7 @@ import {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useToastStore, ToastKind } from '../toast';
 import { useThemeStore } from '../theme/themeStore';
+import { AppIcon, AppIconName } from './AppIcon';
 
 const kindColors: Record<ToastKind, string> = {
   success: 'success',
@@ -16,11 +17,11 @@ const kindColors: Record<ToastKind, string> = {
   warning: 'warning',
 };
 
-const kindIcons: Record<ToastKind, string> = {
-  success: '✓',
-  error: '✕',
-  info: 'ℹ',
-  warning: '!',
+const kindIcons: Record<ToastKind, AppIconName> = {
+  success: 'check',
+  error: 'close',
+  info: 'info',
+  warning: 'warning',
 };
 
 export function ToastContainer() {
@@ -80,7 +81,7 @@ function ToastCard({
       ]}
     >
       <View style={[styles.icon, { backgroundColor: `${color}22` }]}>
-        <Text style={{ color, fontSize: 16, fontWeight: '700' }}>{kindIcons[kind]}</Text>
+        <AppIcon name={kindIcons[kind]} size={17} color={color} />
       </View>
       <View style={styles.body}>
         {title ? <Text style={[styles.title, { color: c.text }]}>{title}</Text> : null}

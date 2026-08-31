@@ -65,7 +65,7 @@ export function WishlistScreen({ onBack, onProductPress }: Props) {
         contentContainerStyle={styles.content}
         ListEmptyComponent={
           <EmptyState
-            icon="♥"
+            icon="heart"
             title="Your wishlist is empty"
             message="Tap the heart on any product to save it here."
           />

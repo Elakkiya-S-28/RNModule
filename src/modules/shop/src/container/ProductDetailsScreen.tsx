@@ -11,6 +11,7 @@ import { type as fontType } from '../../../../core/theme/fonts';
 import { useCartStore } from '../store/cartStore';
 import { useWishlistStore } from '../store/wishlistStore';
 import { usePop } from '../../../../core/util/motion';
+import { AppIcon } from '../../../../core/ui/AppIcon';
 import { Product } from '../types/shop';
 
 interface Props {
@@ -67,7 +68,7 @@ export function ProductDetailsScreen({ product, onBack }: Props) {
       <ScrollView contentContainerStyle={styles.content}>
         <View style={[styles.image, { backgroundColor: c.surfaceAlt }]}
         >
-          <Text style={{ fontSize: 60 }}>🌿</Text>
+          <AppIcon name="leaf" size={60} color="secondary" />
           {discountPct > 0 ? (
             <Badge label={`${discountPct}% off`} tone="danger" style={styles.discount} />
           ) : null}
@@ -83,9 +84,12 @@ export function ProductDetailsScreen({ product, onBack }: Props) {
           {product.mrp > product.price ? (
             <Text style={[styles.mrp, { color: c.textMuted }]}>{formatCurrency(product.mrp)}</Text>
           ) : null}
-          <Text style={[styles.rating, { color: c.warning }]}>
-            ★ {product.rating.toFixed(1)} ({product.reviewsCount})
-          </Text>
+          <View style={styles.ratingWrap}>
+            <AppIcon name="star" size={13} color="warning" />
+            <Text style={[styles.rating, { color: c.warning }]}>
+              {product.rating.toFixed(1)} ({product.reviewsCount})
+            </Text>
+          </View>
         </View>
 
         <View style={styles.badgeRow}>
@@ -99,7 +103,13 @@ export function ProductDetailsScreen({ product, onBack }: Props) {
 
         <Text style={[styles.sectionTitle, { color: c.text }]}>Details</Text>
         <Text style={[styles.body, { color: c.textSecondary }]}>
-          Weight: {product.weight} · {product.herbal ? 'Herbal ✓' : 'Conventional'} · Stock:{' '}
+          {'Weight: '}
+          {product.weight} ·{' '}
+          {product.herbal ? 'Herbal ' : 'Conventional'}
+          {product.herbal ? (
+            <AppIcon name="check" size={12} color="success" />
+          ) : null}
+          {' · Stock: '}
           {product.stock}
         </Text>
 
@@ -136,7 +146,7 @@ export function ProductDetailsScreen({ product, onBack }: Props) {
           fullWidth
         />
         <Button
-          label={wished ? '♥ Saved to wishlist' : '♡ Save to wishlist'}
+          label={wished ? 'Saved to wishlist' : 'Save to wishlist'}
           variant="outline"
           onPress={handleToggleWishlist}
           style={styles.wishBtn}
@@ -164,6 +174,7 @@ const styles = StyleSheet.create({
   price: { ...fontType.price, fontSize: 20 },
   mrp: { textDecorationLine: 'line-through', fontSize: 15 },
   rating: { ...fontType.caption, marginLeft: 4 },
+  ratingWrap: { flexDirection: 'row', alignItems: 'center' },
   badgeRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 8, marginTop: 12 },
   sectionTitle: { ...fontType.sectionTitle, fontSize: 16, marginTop: 20, marginBottom: 6 },
   body: { ...fontType.body, lineHeight: 20 },

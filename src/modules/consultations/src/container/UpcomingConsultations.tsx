@@ -66,7 +66,7 @@ export function UpcomingConsultations({ onBack }: Props) {
         contentContainerStyle={styles.content}
         ListEmptyComponent={
           <EmptyState
-            icon="📅"
+            icon="calendar"
             title="No upcoming consultations"
             message="Book a slot from the doctor explorer and it will appear here."
           />

@@ -1,7 +1,7 @@
 /**
  * End-to-end flow test for the offline-first booking + sync pipeline.
  *
- * Walks the actual API client → offline queue → flush pipeline using the mock
+ * Walks the actual API client, offline queue and flush pipeline using the mock
  * transport, covering: cached reads, offline queueing of a booking, and
  * automatic sync (flush) once "back online".
  */

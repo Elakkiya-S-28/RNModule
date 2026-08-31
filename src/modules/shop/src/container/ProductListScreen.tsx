@@ -14,6 +14,7 @@ import { EmptyState } from '../../../../core/ui/EmptyState';
 import { SkeletonLoader, productCardSkeleton } from '../../../../core/ui/SkeletonLoader';
 import { FadeInView, staggerDelay } from '../../../../core/util/motion';
 import { type as fontType } from '../../../../core/theme/fonts';
+import { AppIcon } from '../../../../core/ui/AppIcon';
 
 interface Props {
   onProductPress: (product: Product) => void;
@@ -102,14 +103,23 @@ export function ProductListScreen({ onProductPress, onCartPress, onWishlistPress
             },
           ]}
         >
-          <Text
-            style={[
-              styles.filterText,
-              { color: activeFilterCount > 0 ? c.textInverse : c.textSecondary },
-            ]}
-          >
-            ⚙{activeFilterCount > 0 ? ` ${activeFilterCount}` : ''}
-          </Text>
+          <View style={styles.filterBtnContent}>
+            <AppIcon
+              name="filter"
+              size={16}
+              color={activeFilterCount > 0 ? 'textInverse' : 'textSecondary'}
+            />
+            {activeFilterCount > 0 ? (
+              <Text
+                style={[
+                  styles.filterText,
+                  { color: activeFilterCount > 0 ? c.textInverse : c.textSecondary },
+                ]}
+              >
+                {activeFilterCount}
+              </Text>
+            ) : null}
+          </View>
         </Pressable>
       </View>
       <View style={styles.summaryRow}>
@@ -153,7 +163,7 @@ export function ProductListScreen({ onProductPress, onCartPress, onWishlistPress
               accessibilityLabel="Open wishlist"
               style={[styles.iconBtn, { borderColor: c.border }]}
             >
-              <Text style={{ fontSize: 16, color: c.secondary }}>♥</Text>
+              <AppIcon name="heart" size={16} color="secondary" />
             </Pressable>
             <Pressable
               onPress={onCartPress}
@@ -161,7 +171,7 @@ export function ProductListScreen({ onProductPress, onCartPress, onWishlistPress
               accessibilityLabel={`Cart with ${cartCount} items`}
               style={[styles.iconBtn, { borderColor: c.border }]}
             >
-              <Text style={{ fontSize: 16 }}>🛒</Text>
+              <AppIcon name="cart" size={16} color="text" />
               {cartCount > 0 ? (
                 <View style={[styles.cartBadge, { backgroundColor: c.accent }]}>
                   <Text style={styles.cartBadgeText}>{cartCount}</Text>
@@ -190,6 +200,7 @@ export function ProductListScreen({ onProductPress, onCartPress, onWishlistPress
           }
           ListEmptyComponent={
             <EmptyState
+              icon="bagHandle"
               title="No products found"
               message="Try a different search or clear the filters."
             />
@@ -222,6 +233,7 @@ const styles = StyleSheet.create({
     marginLeft: 8,
   },
   filterText: { ...fontType.label, fontSize: 14 },
+  filterBtnContent: { flexDirection: 'row', alignItems: 'center', gap: 5 },
   summaryRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',

@@ -11,8 +11,8 @@ const CATEGORY_OPTIONS: { label: string; value: string }[] = PRODUCT_CATEGORIES.
 );
 const SORT_OPTIONS: { label: string; value: SortOption }[] = [
   { label: 'Relevance', value: 'relevance' },
-  { label: 'Price ↑', value: 'price-asc' },
-  { label: 'Price ↓', value: 'price-desc' },
+  { label: 'Price low to high', value: 'price-asc' },
+  { label: 'Price high to low', value: 'price-desc' },
   { label: 'Top rated', value: 'rating' },
   { label: 'Newest', value: 'newest' },
 ];

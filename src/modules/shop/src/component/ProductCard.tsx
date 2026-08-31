@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Animated, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useThemeStore } from '../../../../core/theme/themeStore';
 import { Product } from '../types/shop';
 import { Badge } from '../../../../core/ui/Badge';
@@ -7,6 +7,7 @@ import { formatCurrency } from '../../../../core/util/format';
 import { type as fontType } from '../../../../core/theme/fonts';
 import { useWishlistStore } from '../store/wishlistStore';
 import { useToggleScale, FadeInView } from '../../../../core/util/motion';
+import { AppIcon, AnimatedAppIcon } from '../../../../core/ui/AppIcon';
 
 interface Props {
   product: Product;
@@ -47,7 +48,7 @@ export const ProductCard = React.memo(function ProductCard({
         ]}
       >
         <View style={[styles.image, { backgroundColor: c.surfaceAlt }]}>
-          <Text style={{ fontSize: 30 }}>🌿</Text>
+          <AppIcon name="leaf" size={30} color="secondary" />
           {discountPct > 0 ? (
             <View style={[styles.discountBadge, { backgroundColor: c.secondary }]}>
               <Text style={styles.discountText}>{discountPct}%</Text>
@@ -63,15 +64,14 @@ export const ProductCard = React.memo(function ProductCard({
             accessibilityRole="button"
             accessibilityLabel={wished ? 'Remove from wishlist' : 'Add to wishlist'}
           >
-                                    <Animated.Text
+                                    <AnimatedAppIcon
+              name={wished ? 'heart' : 'heartOutline'}
+              size={18}
+              color={wished ? 'secondary' : 'textMuted'}
               style={{
-                fontSize: 18,
-                color: wished ? c.secondary : c.textMuted,
                 transform: [{ scale: heartPop }],
               }}
-            >
-              {wished ? '♥' : '♡'}
-            </Animated.Text>
+            />
           </Pressable>
         </View>
         <Text numberOfLines={2} style={[styles.name, { color: c.text }]}>
@@ -87,7 +87,12 @@ export const ProductCard = React.memo(function ProductCard({
           ) : null}
         </View>
         <View style={styles.bottomRow}>
-          <Text style={[styles.rating, { color: c.accent }]}>★ {product.rating.toFixed(1)}</Text>
+          <View style={styles.ratingWrap}>
+            <AppIcon name="star" size={12} color="accent" />
+            <Text style={[styles.rating, { color: c.accent }]}>
+              {product.rating.toFixed(1)}
+            </Text>
+          </View>
           {outOfStock ? (
             <Badge label="Out of stock" tone="danger" small />
           ) : (
@@ -131,6 +136,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginTop: 6,
   },
+  ratingWrap: { flexDirection: 'row', alignItems: 'center', gap: 3 },
   rating: { ...fontType.caption },
 });
 

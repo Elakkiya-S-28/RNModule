@@ -6,6 +6,7 @@ import { Avatar } from '../../../../core/ui/Avatar';
 import { FadeInView } from '../../../../core/util/motion';
 import { healthService } from '../services/healthApi';
 import { HealthRecord } from '../types/health';
+import { AppIcon } from '../../../../core/ui/AppIcon';
 
 interface Props {
   record: HealthRecord;
@@ -55,10 +56,13 @@ export function HealthRecordRow({ record, onPress, entranceDelay = 0 }: Props) {
             <Badge label={record.status} tone={tone} small />
           </View>
           {record.attachments.length > 0 ? (
-            <Text style={[styles.attachments, { color: c.primary }]}>
-              📎 {record.attachments.length} attachment
-              {record.attachments.length > 1 ? 's' : ''}
-            </Text>
+            <View style={styles.attachmentsRow}>
+              <AppIcon name="attach" size={11} color="primary" />
+              <Text style={[styles.attachments, { color: c.primary }]}>
+                {record.attachments.length} attachment
+                {record.attachments.length > 1 ? 's' : ''}
+              </Text>
+            </View>
           ) : null}
         </View>
       </Pressable>
@@ -79,7 +83,8 @@ const styles = StyleSheet.create({
   meta: { fontSize: 12, marginTop: 2, fontFamily: 'Inter' },
   bottomRow: { flexDirection: 'row', alignItems: 'center', gap: 8, marginTop: 4 },
   date: { fontSize: 11, fontFamily: 'Inter' },
-  attachments: { fontSize: 11, marginTop: 4, fontFamily: 'Inter Medium' },
+  attachments: { fontSize: 11, fontFamily: 'Inter Medium' },
+  attachmentsRow: { flexDirection: 'row', alignItems: 'center', gap: 3, marginTop: 4 },
 });
 
 export default HealthRecordRow;

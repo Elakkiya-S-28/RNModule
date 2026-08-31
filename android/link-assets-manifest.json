@@ -1,0 +1,25 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "assets/fonts/Inter-400.ttf",
+      "sha1": "bc2a2c0a64d3cf1fdb81686bb508f2ffd3beb0fa"
+    },
+    {
+      "path": "assets/fonts/Inter-500.ttf",
+      "sha1": "3ef993de27b221e608afef5bb0299b4c403f55ec"
+    },
+    {
+      "path": "assets/fonts/Inter-600.ttf",
+      "sha1": "76e5a590ef43af27c0bdff7ed3ca9a4de0211d84"
+    },
+    {
+      "path": "assets/fonts/Inter-700.ttf",
+      "sha1": "c56cb667fd079584ff7bfb27904c0f8cd37a3cd7"
+    },
+    {
+      "path": "assets/fonts/Ionicons.ttf",
+      "sha1": "86e07c3d974eb09099e6e5a9b3b8310303cf0feb"
+    }
+  ]
+}
