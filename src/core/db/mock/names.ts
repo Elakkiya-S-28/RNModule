@@ -1,11 +1,3 @@
-/**
- * Deterministic mock-data generator.
- *
- * Generates the full datasets required by the assignment (5,000 doctors,
- * 20,000 products, 10,000 health records) lazily and deterministically using
- * a seeded PRNG. This keeps memory bounded (we expose subscribers/pages) while
- * still demonstrating "large dataset" behaviour.
- */
 
 import { seededRandom } from '../../../core/util/format';
 

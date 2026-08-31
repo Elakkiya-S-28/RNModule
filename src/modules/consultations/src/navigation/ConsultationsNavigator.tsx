@@ -1,11 +1,10 @@
 import React from 'react';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createNativeStackNavigator, NativeStackScreenProps } from '@react-navigation/native-stack';
 import { ConsultationsStackParamList } from '../../../../app/navigation/types';
-import { DoctorListScreen } from '../screens/DoctorListScreen';
-import { DoctorDetailsScreen } from '../screens/DoctorDetailsScreen';
-import { UpcomingConsultations } from '../screens/UpcomingConsultations';
+import { DoctorListScreen } from '../container/DoctorListScreen';
+import { DoctorDetailsScreen } from '../container/DoctorDetailsScreen';
+import { UpcomingConsultations } from '../container/UpcomingConsultations';
 import { Doctor } from '../types/ct';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 const Stack = createNativeStackNavigator<ConsultationsStackParamList>();
 
@@ -23,19 +22,16 @@ export function ConsultationsNavigator() {
             onDoctorPress={(doctor: Doctor) =>
               navigation.navigate('DoctorDetails', { doctor })
             }
+            onUpcomingPress={() => navigation.navigate('Upcoming')}
           />
         )}
       </Stack.Screen>
-      <Stack.Screen
-        name="DoctorDetails"
-        component={DoctorDetailsScreenWrapper}
-      />
+      <Stack.Screen name="DoctorDetails" component={DoctorDetailsScreenWrapper} />
       <Stack.Screen name="Upcoming" component={UpcomingConsultationsWrapper} />
     </Stack.Navigator>
   );
 }
 
-// Wrappers to translate route params into the screens' prop shapes.
 type DDProps = NativeStackScreenProps<ConsultationsStackParamList, 'DoctorDetails'>;
 function DoctorDetailsScreenWrapper({ route, navigation }: DDProps) {
   const doctor = route.params.doctor ?? null;

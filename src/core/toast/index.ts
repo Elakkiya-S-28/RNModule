@@ -6,7 +6,7 @@ export interface ToastItem {
   id: string;
   kind: ToastKind;
   message: string;
-  /** Optional secondary title. */
+
   title?: string;
   durationMs: number;
 }
@@ -37,7 +37,6 @@ export const useToastStore = create<ToastState>(set => ({
   clear: () => set({ toasts: [] }),
 }));
 
-/** Imperative toast API usable outside React (stores, services, error handlers). */
 export const toast = {
   success: (message: string, title?: string) =>
     useToastStore.getState().show({ kind: 'success', message, title }),

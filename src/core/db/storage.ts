@@ -1,14 +1,3 @@
-/**
- * Storage abstraction.
- *
- * Wraps AsyncStorage but detects when the native module is unavailable
- * (e.g. during Jest tests or if the native link is missing) and transparently
- * falls back to an in-memory implementation so the rest of the app can rely on
- * a consistent async KV API.
- *
- * All values are JSON-serialised so arbitrary structured data can be stored.
- */
-
 type StorageLike = {
   getItem: (key: string) => Promise<string | null>;
   setItem: (key: string, value: string) => Promise<void>;
@@ -17,14 +6,11 @@ type StorageLike = {
 
 let nativeStorage: StorageLike | null = null;
 try {
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
   const AsyncStorage = require('@react-native-async-storage/async-storage').default;
   nativeStorage = AsyncStorage;
 } catch {
   nativeStorage = null;
 }
-
-/** In-memory fallback (also used by tests via an explicit injectable backend). */
 export function createInMemoryStorage(initial: Record<string, string> = {}): StorageLike {
   const map = new Map<string, string>(Object.entries(initial));
   return {
@@ -51,15 +37,36 @@ class StorageService {
         : this.memoryBackend;
   }
 
-  /** Allow tests / SSR to swap or inject a backend. */
   setBackend(backend: StorageLike | null): void {
     this.backend = backend ?? this.memoryBackend;
   }
 
-  async getJSON<T>(key: string): Promise<T | null> {
+  async getItem(key: string): Promise<string | null> {
     try {
-      const raw = await this.backend.getItem(this.prefix(key));
-      if (raw == null) return null;
+      return await this.backend.getItem(this.prefix(key));
+    } catch {
+      return null;
+    }
+  }
+
+  async setItem(key: string, value: string): Promise<void> {
+    try {
+      await this.backend.setItem(this.prefix(key), value);
+    } catch {
+    }
+  }
+
+  async removeItem(key: string): Promise<void> {
+    try {
+      await this.backend.removeItem(this.prefix(key));
+    } catch {
+    }
+  }
+
+  async getJSON<T>(key: string): Promise<T | null> {
+    const raw = await this.getItem(key);
+    if (raw == null) return null;
+    try {
       return JSON.parse(raw) as T;
     } catch {
       return null;
@@ -67,35 +74,17 @@ class StorageService {
   }
 
   async setJSON<T>(key: string, value: T): Promise<void> {
-    try {
-      await this.backend.setItem(this.prefix(key), JSON.stringify(value));
-    } catch {
-      // ignore write failures (quota etc.) - storage is best-effort
-    }
+    await this.setItem(key, JSON.stringify(value));
   }
 
   async remove(key: string): Promise<void> {
-    try {
-      await this.backend.removeItem(this.prefix(key));
-    } catch {
-      // ignore
-    }
+    await this.removeItem(key);
   }
 
   async clearAll(): Promise<void> {
-    try {
-      const suffix = this.prefix('');
-      // Iterate & remove keys we own (best-effort for native backends).
-      // Memory backend is cheap to clear entirely.
-      if (this.backend === this.memoryBackend) {
-        await this.memoryBackend.removeItem('__all__');
-        // re-create a fresh map
-        (this as unknown as { memoryBackend: StorageLike }).memoryBackend =
-          createInMemoryStorage();
-      }
-      void suffix;
-    } catch {
-      // ignore
+    if (this.backend === this.memoryBackend) {
+      (this as unknown as { memoryBackend: StorageLike }).memoryBackend =
+        createInMemoryStorage();
     }
   }
 
@@ -103,7 +92,6 @@ class StorageService {
     return `@ayurveda/${key}`;
   }
 }
-
 export const storage = new StorageService();
 export type { StorageLike };
 export default storage;

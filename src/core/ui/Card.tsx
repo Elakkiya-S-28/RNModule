@@ -6,11 +6,10 @@ interface Props {
   children?: ReactNode;
   style?: StyleProp<ViewStyle>;
   onPress?: () => void;
-  /** Optional title row shown at top. */
+
   title?: string;
 }
 
-/** Surface card used across all modules for consistent elevation/separators. */
 export function Card({ children, style, onPress, title }: Props) {
   const theme = useThemeStore(s => s.theme);
   const c = theme.colors;

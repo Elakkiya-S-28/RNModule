@@ -1,10 +1,3 @@
-/**
- * Feature Flags — Bonus.
- *
- * A lightweight, typed feature-flag store. Flags can be set at build/runtime
- * and would typically be refreshed from Remote Config. Included to demonstrate
- * safe, incremental feature rollout.
- */
 
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
@@ -52,7 +45,6 @@ export const useFeatureFlags = create<FlagState>()(
   ),
 );
 
-/** Hook-friendly helper: true when the given flag is on. */
 export function isFeatureEnabled(key: FlagKey): boolean {
   return useFeatureFlags.getState().flags[key];
 }

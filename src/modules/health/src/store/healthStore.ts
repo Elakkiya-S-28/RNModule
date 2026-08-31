@@ -11,44 +11,54 @@ interface HealthState {
   groups: HealthGroup[];
   total: number;
   loading: boolean;
+  initialLoading: boolean;
   error: string | null;
   filters: HealthFilters;
   search: string;
   load: (reset?: boolean) => Promise<void>;
   setSearch: (q: string) => void;
+  clearSearch: () => void;
   applyFilters: (f: Partial<HealthFilters>) => void;
   toggleKind: (k: RecordKind) => void;
   toggleTag: (t: string) => void;
   clearFilters: () => void;
 }
 
-/**
- * Health Records store: fetches + groups records by month/year from the API
- * (with caching), and composes query/tag/kind filters.
- */
+let requestSeq = 0;
+
 export const useHealthStore = create<HealthState>((set, get) => ({
   groups: [],
   total: 0,
   loading: false,
+  initialLoading: false,
   error: null,
   filters: {},
   search: '',
 
   load: async (reset = true) => {
-    set({ loading: true, error: null });
-    const filters: HealthFilters = { ...get().filters, query: get().search || undefined };
+    const seq = ++requestSeq;
+    set(
+      reset
+        ? { initialLoading: get().groups.length === 0, loading: true, error: null }
+        : { loading: true, error: null },
+    );
+    const filters: HealthFilters = {
+      ...get().filters,
+      query: get().search.trim() || undefined,
+    };
     try {
       const { groups, total } = await healthService.getTimeline(filters);
-      set({ groups: reset ? groups : groups, total, loading: false });
+      if (seq !== requestSeq) return;
+      set({ groups, total, loading: false, initialLoading: false });
     } catch (e) {
-      set({ loading: false, error: (e as Error).message });
+      if (seq !== requestSeq) return;
+      set({ loading: false, initialLoading: false, error: (e as Error).message });
     }
   },
 
-  setSearch: q => {
-    set({ search: q });
-    get().load(true);
-  },
+  setSearch: q => set({ search: q }),
+
+  clearSearch: () => set({ search: '' }),
 
   applyFilters: f => {
     set(state => ({ filters: { ...state.filters, ...f } }));
@@ -73,7 +83,6 @@ export const useHealthStore = create<HealthState>((set, get) => ({
   },
 }));
 
-/** Flatten groups to a flat list for searchability. */
 export function flattenGroups(groups: HealthGroup[]): HealthRecord[] {
   return groups.flatMap(g => g.records);
 }

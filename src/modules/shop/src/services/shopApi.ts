@@ -10,8 +10,6 @@ import {
 import { getProductById, getProductsPage, getProductByRank } from './productRepo';
 import { toISODate } from '../../../../core/util/format';
 
-// Route the shared api client through the mock transport (set already in
-// consultationApi; re-asserted here for import-order safety).
 api.useTransport(mockTransport);
 
 async function listProducts(
@@ -52,7 +50,6 @@ async function getProduct(id: string): Promise<Product | null> {
   }
 }
 
-/** Compute checkout summary for a set of cart items (prices from repo). */
 export function computeCheckoutSummary(
   items: { productId: string; quantity: number }[],
 ): CheckoutSummary {
@@ -64,7 +61,7 @@ export function computeCheckoutSummary(
     subtotal += p.price * it.quantity;
     itemCount += it.quantity;
   }
-  const discount = subtotal * 0.1; // mock flat 10% "offer"
+  const discount = subtotal * 0.1;
   const shipping = subtotal > 500 ? 0 : 49;
   const tax = subtotal * 0.05;
   const total = subtotal - discount + shipping + tax;
@@ -72,12 +69,11 @@ export function computeCheckoutSummary(
 }
 
 async function placeOrder(): Promise<{ orderId: string; date: string }> {
-  // In offline mode this request is queued by ApiClient and we optimistically
-  // return an order id so the UI can show success.
+
   try {
     await api.post('orders', { ts: Date.now() }, { timeout: 4000, retries: 1 });
   } catch {
-    // queued offline — proceed optimistically
+
   }
   return { orderId: `ord-${Date.now()}`, date: toISODate(Date.now()) };
 }

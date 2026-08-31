@@ -1,22 +1,18 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import {
-  Pressable,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
+import React, { useCallback, useEffect, useState } from 'react';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useThemeStore } from '../../../../core/theme/themeStore';
 import { AppBar } from '../../../../core/ui/AppBar';
 import { Avatar } from '../../../../core/ui/Avatar';
 import { Badge } from '../../../../core/ui/Badge';
 import { Button } from '../../../../core/ui/Button';
-import { Spinner } from '../../../../core/ui/Spinner';
+import { SkeletonLoader, rowSkeletonLayout } from '../../../../core/ui/SkeletonLoader';
 import { toast } from '../../../../core/toast';
 import { formatCurrency, formatTime12h, toISODate } from '../../../../core/util/format';
+import { type as fontType } from '../../../../core/theme/fonts';
 import { consultationService } from '../services/consultationApi';
 import { useAppointmentsStore, isSlotBookedById } from '../store/appointmentsStore';
 import { Doctor, Slot } from '../types/ct';
+import { SlotGrid, DateStrip, buildDates } from '../component/SlotPicker';
 
 interface Props {
   doctorId: string;
@@ -28,41 +24,64 @@ export function DoctorDetailsScreen({ doctorId, onBack, onBooked }: Props) {
   const theme = useThemeStore(s => s.theme);
   const c = theme.colors;
   const bookings = useAppointmentsStore(s => s.bookings);
-
-  const [loading, setLoading] = useState(true);
+  const [doctorLoading, setDoctorLoading] = useState(true);
   const [doctor, setDoctor] = useState<Doctor | null>(null);
+  const [slotsLoading, setSlotsLoading] = useState(true);
   const [slots, setSlots] = useState<Slot[]>([]);
   const [selectedDate, setSelectedDate] = useState(toISODate(Date.now()));
   const [booking, setBooking] = useState<Slot | null>(null);
-  const [bookingConfirming, setBookingConfirming] = useState(false);
+  const [confirming, setConfirming] = useState(false);
+  const dates = buildDates(14);
 
   useEffect(() => {
     let active = true;
-    setLoading(true);
+    setDoctorLoading(true);
+    consultationService
+      .getDoctor(doctorId)
+      .then(d => {
+        if (!active) return;
+        setDoctor(d);
+        setDoctorLoading(false);
+      })
+      .catch(() => {
+        if (!active) return;
+        setDoctorLoading(false);
+        toast.error('Could not load doctor');
+      });
+    return () => {
+      active = false;
+    };
+  }, [doctorId]);
+
+  useEffect(() => {
+    let active = true;
+    setSlotsLoading(true);
+    setBooking(null);
     consultationService
       .getDoctorDetails(doctorId, selectedDate)
       .then(res => {
         if (!active) return;
-        setDoctor(res.doctor);
         setSlots(res.slots);
-        setLoading(false);
+        setSlotsLoading(false);
       })
       .catch(() => {
         if (!active) return;
-        setLoading(false);
-        toast.error('Could not load doctor details');
+        setSlotsLoading(false);
+        toast.error('Could not load slots');
       });
     return () => {
       active = false;
     };
   }, [doctorId, selectedDate]);
 
-  const dates = useMemo(() => buildDates(14), []);
-
   const markBooked = useCallback(
     (slot: Slot) => slot.isBooked || isSlotBookedById(bookings, slot.id) || slotExpired(slot),
     [bookings],
   );
+
+  function onSelectSlot(slot: Slot) {
+    setBooking(cur => (cur?.id === slot.id ? null : slot));
+  }
 
   async function confirmBooking() {
     if (!doctor || !booking) return;
@@ -75,7 +94,7 @@ export function DoctorDetailsScreen({ doctorId, onBack, onBooked }: Props) {
       setBooking(null);
       return;
     }
-    setBookingConfirming(true);
+    setConfirming(true);
     try {
       await consultationService.bookSlot(doctor, booking, 'General consultation');
       useAppointmentsStore.getState().addBooking({
@@ -99,12 +118,12 @@ export function DoctorDetailsScreen({ doctorId, onBack, onBooked }: Props) {
       toast.error('We could not book right now. Saved offline.');
       setBooking(null);
     } finally {
-      setBookingConfirming(false);
+      setConfirming(false);
     }
   }
 
-  if (loading) {
-    return <Spinner label="Loading doctor..." />;
+  if (doctorLoading) {
+    return <SkeletonLoader isLoading layout={rowSkeletonLayout(5)} />;
   }
   if (!doctor) {
     return (
@@ -135,43 +154,24 @@ export function DoctorDetailsScreen({ doctorId, onBack, onBooked }: Props) {
           <Stat label="Rating" value={`★ ${doctor.rating.toFixed(1)}`} />
           <Stat label="Reviews" value={`${doctor.reviewsCount}`} />
           <Stat label="Fee" value={formatCurrency(doctor.consultationFee)} />
-        </View>
-        <View style={styles.section}>
+        </View>        <View style={styles.section}>
           <Text style={[styles.sectionTitle, { color: c.text }]}>Available slots</Text>
           <DateStrip dates={dates} selected={selectedDate} onSelect={setSelectedDate} />
-          {slots.length === 0 ? (
-            <Text style={{ color: c.textMuted, paddingVertical: 12 }}>No free slots this day.</Text>
-          ) : (
-            <View style={styles.slotGrid}>
-              {slots.map(slot => {
-                const unavailable = markBooked(slot);
-                const selected = booking?.id === slot.id;
-                return (
-                  <Pressable
-                    key={slot.id}
-                    disabled={unavailable}
-                    onPress={() => setBooking(selected ? null : slot)}
-                    style={({ pressed }) => [
-                      styles.slotChip,
-                      {
-                        backgroundColor: selected ? c.primary : unavailable ? c.surfaceAlt : c.surface,
-                        borderColor: selected ? c.primary : unavailable ? c.border : c.primary,
-                        opacity: pressed && !unavailable ? 0.9 : 1,
-                      },
-                    ]}
-                    accessibilityLabel={`Slot ${formatTime12h(Math.floor(slot.startMinutes / 60), slot.startMinutes % 60)}`}
-                  >
-                    <Text style={{ color: selected ? c.textInverse : unavailable ? c.textMuted : c.primary, fontWeight: '700', fontSize: 13 }}>
-                      {formatTime12h(Math.floor(slot.startMinutes / 60), slot.startMinutes % 60)}
-                    </Text>
-                    <Text style={{ color: selected ? c.textInverse : c.textMuted, fontSize: 10 }}>
-                      {slot.mode}
-                    </Text>
-                  </Pressable>
-                );
-              })}
-            </View>
-          )}
+          <SkeletonLoader
+            isLoading={slotsLoading}
+            layout={[
+              { width: 90, height: 40, borderRadius: 10, marginRight: 8 },
+              { width: 90, height: 40, borderRadius: 10, marginRight: 8 },
+              { width: 90, height: 40, borderRadius: 10, marginRight: 8 },
+            ]}
+          >
+            <SlotGrid
+              slots={slots}
+              selectedId={booking?.id ?? null}
+              unavailable={markBooked}
+              onSelect={onSelectSlot}
+            />
+          </SkeletonLoader>
         </View>
 
         <View style={styles.section}>
@@ -185,25 +185,22 @@ export function DoctorDetailsScreen({ doctorId, onBack, onBooked }: Props) {
         </View>
 
         {booking ? (
-          <ConfirmBar doctor={doctor} slot={booking} confirming={bookingConfirming} onConfirm={confirmBooking} />
+          <ConfirmBar
+            doctor={doctor}
+            slot={booking}
+            confirming={confirming}
+            onConfirm={confirmBooking}
+          />
         ) : null}
       </ScrollView>
     </View>
   );
 }
-function slotExpired(slot: Slot): boolean {
-  const start = new Date(`${slot.dateISO}T00:00:00`).getTime() + slot.startMinutes * 60000;
-  return start <= Date.now();
-}
 
-function buildDates(n: number): string[] {
-  const out: string[] = [];
-  const today = new Date();
-  for (let i = 0; i < n; i++) {
-    const d = new Date(today.getFullYear(), today.getMonth(), today.getDate() + i);
-    out.push(toISODate(d.getTime()));
-  }
-  return out;
+function slotExpired(slot: Slot): boolean {
+  const start =
+    new Date(`${slot.dateISO}T00:00:00`).getTime() + slot.startMinutes * 60000;
+  return start <= Date.now();
 }
 
 function Stat({ label, value }: { label: string; value: string }) {
@@ -214,44 +211,6 @@ function Stat({ label, value }: { label: string; value: string }) {
       <Text style={[styles.statValue, { color: c.text }]}>{value}</Text>
       <Text style={[styles.statLabel, { color: c.textMuted }]}>{label}</Text>
     </View>
-  );
-}
-
-function DateStrip({
-  dates,
-  selected,
-  onSelect,
-}: {
-  dates: string[];
-  selected: string;
-  onSelect: (iso: string) => void;
-}) {
-  const theme = useThemeStore(s => s.theme);
-  const c = theme.colors;
-  return (
-    <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.dateStrip}>
-      {dates.map(iso => {
-        const d = new Date(`${iso}T00:00:00`);
-        const active = iso === selected;
-        return (
-          <Pressable
-            key={iso}
-            onPress={() => onSelect(iso)}
-            style={[
-              styles.datePill,
-              { backgroundColor: active ? c.primary : c.surface, borderColor: active ? c.primary : c.border },
-            ]}
-          >
-            <Text style={{ color: active ? c.textInverse : c.textMuted, fontSize: 11 }}>
-              {d.toLocaleDateString('en-US', { weekday: 'short' })}
-            </Text>
-            <Text style={{ color: active ? c.textInverse : c.text, fontSize: 15, fontWeight: '700' }}>
-              {d.getDate()}
-            </Text>
-          </Pressable>
-        );
-      })}
-    </ScrollView>
   );
 }
 
@@ -278,14 +237,26 @@ function ConfirmBar({
           {formatCurrency(doctor.consultationFee)}
         </Text>
       </View>
-      <Button label={confirming ? 'Booking...' : 'Book consultation'} onPress={onConfirm} loading={confirming} disabled={confirming} />
+      <Button
+        label={confirming ? 'Booking...' : 'Book consultation'}
+        onPress={onConfirm}
+        loading={confirming}
+        disabled={confirming}
+      />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   content: { padding: 16, paddingBottom: 40 },
-  hero: { flexDirection: 'row', alignItems: 'center', borderWidth: 1, borderRadius: 16, padding: 16, marginBottom: 12 },
+  hero: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderRadius: 16,
+    padding: 16,
+    marginBottom: 12,
+  },
   heroBody: { flex: 1, marginLeft: 14 },
   hname: { fontSize: 18, fontWeight: '700' },
   hspec: { fontSize: 14, fontWeight: '600', marginTop: 2 },
@@ -296,12 +267,16 @@ const styles = StyleSheet.create({
   statLabel: { fontSize: 10, marginTop: 2 },
   section: { marginTop: 18 },
   sectionTitle: { fontSize: 16, fontWeight: '700', marginBottom: 10 },
-  dateStrip: { marginBottom: 12 },
-  datePill: { borderWidth: 1, borderRadius: 12, paddingHorizontal: 12, paddingVertical: 8, marginRight: 8, alignItems: 'center', minWidth: 58 },
-  slotGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
-  slotChip: { borderWidth: 1, borderRadius: 10, paddingHorizontal: 12, paddingVertical: 8, minWidth: 78, alignItems: 'center' },
   badgeRow: { flexDirection: 'row', gap: 6, marginTop: 10, flexWrap: 'wrap' },
-  confirm: { borderWidth: 1, borderRadius: 16, padding: 12, marginTop: 20, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
+  confirm: {
+    borderWidth: 1,
+    borderRadius: 16,
+    padding: 12,
+    marginTop: 20,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
   confirmInfo: { flex: 1, marginRight: 12 },
 });
 

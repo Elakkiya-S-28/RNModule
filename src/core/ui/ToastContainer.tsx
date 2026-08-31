@@ -23,7 +23,6 @@ const kindIcons: Record<ToastKind, string> = {
   warning: '!',
 };
 
-/** Global toast overlay rendered once at the app root. */
 export function ToastContainer() {
   const sw = useSafeAreaInsets();
   const toasts = useToastStore(s => s.toasts);

@@ -7,17 +7,12 @@ interface AppointmentsState {
   bookings: Booking[];
   addBooking: (b: Booking) => void;
   cancelBooking: (bookingId: string) => void;
-  /** Prune/flag bookings whose slot start has already passed. */
+
   refreshExpiry: (now?: number) => void;
 }
 
 const jsonStorage = createJSONStorage(() => storage as never);
 
-/**
- * Local appointments store (persisted to device storage).
- * Offline bookings are kept here and marked `status: 'upcoming'` — they become
- * the "Upcoming Consultation" list even without connectivity.
- */
 export const useAppointmentsStore = create<AppointmentsState>()(
   persist(
     set => ({
@@ -50,7 +45,6 @@ export const useAppointmentsStore = create<AppointmentsState>()(
   ),
 );
 
-/** Derived: upcoming (not completed/cancelled) booking list. */
 export function selectUpcoming(bookings: Booking[], now = Date.now()): Booking[] {
   return bookings.filter(b => {
     if (b.status !== 'upcoming') return false;
@@ -59,7 +53,6 @@ export function selectUpcoming(bookings: Booking[], now = Date.now()): Booking[]
   });
 }
 
-/** Detects whether a slot can be booked (not already in a booking, not expired). */
 export function isSlotBookedById(bookings: Booking[], slotId: string): boolean {
   return bookings.some(b => b.slotId === slotId && b.status === 'upcoming');
 }

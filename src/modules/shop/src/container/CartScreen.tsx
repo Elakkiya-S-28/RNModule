@@ -5,8 +5,10 @@ import { AppBar } from '../../../../core/ui/AppBar';
 import { Button } from '../../../../core/ui/Button';
 import { EmptyState } from '../../../../core/ui/EmptyState';
 import { Card } from '../../../../core/ui/Card';
+import { QtyStepper } from '../../../../core/ui/QtyStepper';
 import { toast } from '../../../../core/toast';
 import { formatCurrency } from '../../../../core/util/format';
+import { type as fontType } from '../../../../core/theme/fonts';
 import { useCartStore } from '../store/cartStore';
 import { shopService } from '../services/shopApi';
 import { getProductById } from '../services/productRepo';
@@ -66,22 +68,23 @@ export function CartScreen({ onBack }: Props) {
               <Text numberOfLines={2} style={[styles.name, { color: c.text }]}>
                 {row.product.name}
               </Text>
-              <Text style={{ color: c.primary, fontSize: 12 }}>
+              <Text style={[styles.each, { color: c.primary }]}>
                 {formatCurrency(row.product.price)} each
               </Text>
               <View style={styles.qtyRow}>
-                <QtyBtn label="-" onPress={() => updateQuantity(row.item.productId, row.item.quantity - 1)} />
-                <Text style={{ color: c.text, fontWeight: '700', minWidth: 28, textAlign: 'center' }}>
-                  {row.item.quantity}
-                </Text>
-                <QtyBtn label="+" onPress={() => updateQuantity(row.item.productId, row.item.quantity + 1)} />
+                <QtyStepper
+                  quantity={row.item.quantity}
+                  min={1}
+                  max={99}
+                  onChange={q => updateQuantity(row.item.productId, q)}
+                />
                 <Pressable
                   onPress={() => removeItem(row.item.productId)}
-                  style={{ marginLeft: 'auto' }}
+                  style={styles.removeBtn}
                   accessibilityRole="button"
                   accessibilityLabel="Remove item"
                 >
-                  <Text style={{ color: c.danger, fontSize: 12, fontWeight: '600' }}>Remove</Text>
+                  <Text style={[styles.removeText, { color: c.danger }]}>Remove</Text>
                 </Pressable>
               </View>
               <Text style={[styles.lineTotal, { color: c.text }]}>
@@ -102,12 +105,15 @@ export function CartScreen({ onBack }: Props) {
             <View style={[styles.summary, { backgroundColor: c.surface, borderColor: c.border }]}>
               <SummaryLine label="Subtotal" value={formatCurrency(summary.subtotal)} />
               <SummaryLine label="Discount (10%)" value={`- ${formatCurrency(summary.discount)}`} />
-              <SummaryLine label="Shipping" value={summary.shipping === 0 ? 'FREE' : formatCurrency(summary.shipping)} />
+              <SummaryLine
+                label="Shipping"
+                value={summary.shipping === 0 ? 'FREE' : formatCurrency(summary.shipping)}
+              />
               <SummaryLine label="Tax (5%)" value={formatCurrency(summary.tax)} />
-              <View style={styles.divider} />
+              <View style={[styles.divider, { backgroundColor: c.border }]} />
               <SummaryLine label="Total" value={formatCurrency(summary.total)} strong />
               <Button
-                label={placing ? 'Placing order...' : 'Place order'}
+                label={placing ? 'Placing order…' : 'Place order'}
                 onPress={checkout}
                 loading={placing}
                 disabled={placing}
@@ -121,27 +127,23 @@ export function CartScreen({ onBack }: Props) {
     </View>
   );
 }
-function QtyBtn({ label, onPress }: { label: string; onPress: () => void }) {
-  const theme = useThemeStore(s => s.theme);
-  const c = theme.colors;
-  return (
-    <Pressable
-      onPress={onPress}
-      style={({ pressed }) => [styles.qtyBtn, { borderColor: c.border, opacity: pressed ? 0.7 : 1 }]}
-      accessibilityRole="button"
-    >
-      <Text style={{ color: c.text, fontWeight: '700' }}>{label}</Text>
-    </Pressable>
-  );
-}
 
 function SummaryLine({ label, value, strong }: { label: string; value: string; strong?: boolean }) {
   const theme = useThemeStore(s => s.theme);
   const c = theme.colors;
   return (
     <View style={styles.sumLine}>
-      <Text style={[styles.sumLabel, { color: c.textSecondary, fontWeight: strong ? '700' : '400' }]}>{label}</Text>
-      <Text style={[styles.sumValue, { color: c.text, fontWeight: strong ? '800' : '600', fontSize: strong ? 17 : 14 }]}>{value}</Text>
+      <Text style={[styles.sumLabel, { color: c.textSecondary, fontWeight: strong ? '700' : '400' }]}>
+        {label}
+      </Text>
+      <Text
+        style={[
+          styles.sumValue,
+          { color: c.text, fontWeight: strong ? '800' : '600', fontSize: strong ? 17 : 14 },
+        ]}
+      >
+        {value}
+      </Text>
     </View>
   );
 }
@@ -149,17 +151,26 @@ function SummaryLine({ label, value, strong }: { label: string; value: string; s
 const styles = StyleSheet.create({
   content: { padding: 16, paddingBottom: 32 },
   rowCard: { flexDirection: 'row' },
-  thumb: { width: 64, height: 64, borderRadius: 12, alignItems: 'center', justifyContent: 'center', marginRight: 12 },
+  thumb: {
+    width: 64,
+    height: 64,
+    borderRadius: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 12,
+  },
   rowBody: { flex: 1 },
-  name: { fontSize: 14, fontWeight: '600', marginBottom: 2 },
-  qtyRow: { flexDirection: 'row', alignItems: 'center', marginTop: 8, gap: 8 },
-  qtyBtn: { borderWidth: 1, borderRadius: 8, width: 30, height: 30, alignItems: 'center', justifyContent: 'center' },
-  lineTotal: { marginTop: 8, fontWeight: '700' },
+  name: { ...fontType.cardTitle, fontSize: 14, marginBottom: 2 },
+  each: { ...fontType.caption, fontSize: 12 },
+  qtyRow: { flexDirection: 'row', alignItems: 'center', marginTop: 8 },
+  removeBtn: { marginLeft: 'auto', paddingLeft: 10, paddingVertical: 6 },
+  removeText: { ...fontType.label, fontSize: 12 },
+  lineTotal: { marginTop: 8, ...fontType.price },
   summary: { borderWidth: 1, borderRadius: 16, padding: 16, marginTop: 8 },
   sumLine: { flexDirection: 'row', justifyContent: 'space-between', paddingVertical: 5 },
-  sumLabel: { fontSize: 14 },
-  sumValue: { fontSize: 14 },
-  divider: { height: 1, backgroundColor: '#ccc', marginVertical: 8 },
+  sumLabel: { ...fontType.body, fontSize: 14 },
+  sumValue: { ...fontType.bodyMedium, fontSize: 14 },
+  divider: { height: 1, marginVertical: 8 },
 });
 
 export default CartScreen;

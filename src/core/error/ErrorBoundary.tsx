@@ -5,7 +5,7 @@ import { useThemeStore } from '../theme/themeStore';
 
 interface Props {
   children: ReactNode;
-  /** Fallback render for production (custom). */
+
   renderFallback?: (retry: () => void, error: Error) => ReactNode;
 }
 
@@ -14,11 +14,6 @@ interface State {
   error: Error | null;
 }
 
-/**
- * Global error boundary. Catches render-time errors anywhere in the tree below
- * it, logs them via the logger (feeding crash-report abstraction), and shows a
- * friendly fallback with a "Try again" action instead of a blank screen.
- */
 export class ErrorBoundary extends Component<Props, State> {
   state: State = { hasError: false, error: null };
 
@@ -32,7 +27,7 @@ export class ErrorBoundary extends Component<Props, State> {
       stack: error.stack,
       componentStack: info.componentStack,
     });
-    // Crash-reporting abstraction hook would be invoked here.
+
   }
 
   private retry = (): void => {

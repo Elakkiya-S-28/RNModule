@@ -1,7 +1,3 @@
-/**
- * Mock data source for the Shop module: a lazily-materialised pool of 20,000
- * products with filtering, sorting and pagination.
- */
 
 import {
   Product,
@@ -76,7 +72,7 @@ export function getProductsPage(
   sort: SortOption = 'relevance',
   infinite = false,
 ): ProductListResult {
-  // Precompute an index of matching ranks to avoid materialising 20k at once.
+
   const matchingRanks: number[] = [];
   for (let i = 0; i < PRODUCT_COUNT; i++) {
     if (matchesProduct(getProductByRank(i), filters)) matchingRanks.push(i);
@@ -121,7 +117,6 @@ function matchesProduct(p: Product, f: ProductFilters): boolean {
   return true;
 }
 
-/** Distinct brand list for filter UI (sampled, bounded). */
 export function getAllBrands(): string[] {
   return PRODUCT_BRANDS;
 }

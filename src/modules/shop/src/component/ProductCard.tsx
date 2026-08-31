@@ -4,6 +4,7 @@ import { useThemeStore } from '../../../../core/theme/themeStore';
 import { Product } from '../types/shop';
 import { Badge } from '../../../../core/ui/Badge';
 import { formatCurrency } from '../../../../core/util/format';
+import { type as fontType } from '../../../../core/theme/fonts';
 import { useWishlistStore } from '../store/wishlistStore';
 
 interface Props {
@@ -12,7 +13,6 @@ interface Props {
   onWishlistToggle?: (id: string) => void;
 }
 
-/** Virtualised product grid card (two-column via parent). */
 export const ProductCard = React.memo(function ProductCard({
   product,
   onPress,
@@ -22,9 +22,8 @@ export const ProductCard = React.memo(function ProductCard({
   const c = theme.colors;
   const wished = useWishlistStore(s => s.productIds.includes(product.id));
   const outOfStock = product.stock <= 0;
-  const discountPct = product.mrp > product.price
-    ? Math.round((1 - product.price / product.mrp) * 100)
-    : 0;
+  const discountPct =
+    product.mrp > product.price ? Math.round((1 - product.price / product.mrp) * 100) : 0;
 
   return (
     <Pressable
@@ -39,7 +38,7 @@ export const ProductCard = React.memo(function ProductCard({
       <View style={[styles.image, { backgroundColor: c.surfaceAlt }]}>
         <Text style={{ fontSize: 30 }}>🌿</Text>
         {discountPct > 0 ? (
-          <View style={[styles.discountBadge, { backgroundColor: c.danger }]}>
+          <View style={[styles.discountBadge, { backgroundColor: c.terracotta }]}>
             <Text style={styles.discountText}>{discountPct}%</Text>
           </View>
         ) : null}
@@ -50,8 +49,8 @@ export const ProductCard = React.memo(function ProductCard({
           accessibilityRole="button"
           accessibilityLabel={wished ? 'Remove from wishlist' : 'Add to wishlist'}
         >
-          <Text style={{ fontSize: 18, color: wished ? c.danger : c.textMuted }}>
-            {wished ? '❤' : '🤍'}
+          <Text style={{ fontSize: 18, color: wished ? c.terracotta : c.textMuted }}>
+            {wished ? '♥' : '♡'}
           </Text>
         </Pressable>
       </View>
@@ -67,28 +66,50 @@ export const ProductCard = React.memo(function ProductCard({
           <Text style={[styles.mrp, { color: c.textMuted }]}>{formatCurrency(product.mrp)}</Text>
         ) : null}
       </View>
-      <Text style={{ color: c.warning, fontSize: 12 }}>★ {product.rating.toFixed(1)}</Text>
-      {outOfStock ? (
-        <Badge label="Out of stock" tone="danger" small style={styles.outBadge} />
-      ) : (
-        <Badge label="In stock" tone="success" small style={styles.outBadge} />
-      )}
+      <View style={styles.bottomRow}>
+        <Text style={[styles.rating, { color: c.accent }]}>★ {product.rating.toFixed(1)}</Text>
+        {outOfStock ? (
+          <Badge label="Out of stock" tone="danger" small />
+        ) : (
+          <Badge label="In stock" tone="success" small />
+        )}
+      </View>
     </Pressable>
   );
 });
 
 const styles = StyleSheet.create({
   card: { flex: 1, borderWidth: 1, borderRadius: 16, padding: 10, margin: 6 },
-  image: { height: 80, borderRadius: 12, alignItems: 'center', justifyContent: 'center', marginBottom: 8, position: 'relative' },
-  discountBadge: { position: 'absolute', top: 6, left: 6, borderRadius: 6, paddingHorizontal: 5, paddingVertical: 1 },
-  discountText: { color: '#fff', fontSize: 10, fontWeight: '700' },
+  image: {
+    height: 80,
+    borderRadius: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 8,
+    position: 'relative',
+  },
+  discountBadge: {
+    position: 'absolute',
+    top: 6,
+    left: 6,
+    borderRadius: 6,
+    paddingHorizontal: 5,
+    paddingVertical: 1,
+  },
+  discountText: { ...fontType.label, color: '#FFFFFF', fontSize: 10 },
   wish: { position: 'absolute', top: 4, right: 4 },
-  name: { fontSize: 13.5, fontWeight: '600', lineHeight: 17 },
-  brand: { fontSize: 11.5, marginTop: 2 },
+  name: { ...fontType.cardTitle, fontSize: 13.5, lineHeight: 18 },
+  brand: { ...fontType.caption, fontSize: 11.5, marginTop: 2 },
   priceRow: { flexDirection: 'row', alignItems: 'center', marginTop: 6, gap: 6 },
-  price: { fontWeight: '700', fontSize: 15 },
+  price: { ...fontType.price, fontSize: 15 },
   mrp: { textDecorationLine: 'line-through', fontSize: 12 },
-  outBadge: { marginTop: 6 },
+  bottomRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginTop: 6,
+  },
+  rating: { ...fontType.caption },
 });
 
 export default ProductCard;

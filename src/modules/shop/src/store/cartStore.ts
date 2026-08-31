@@ -15,10 +15,6 @@ interface CartState {
   clear: () => void;
 }
 
-/**
- * Shopping cart — persisted locally (offline cart). Quantity updates and add/
- * remove are pure local mutations (server sync is mock/no-op).
- */
 export const useCartStore = create<CartState>()(
   persist(
     set => ({

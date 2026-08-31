@@ -5,13 +5,10 @@ import { Doctor } from '../types/ct';
 import { Avatar } from '../../../../core/ui/Avatar';
 import { Badge } from '../../../../core/ui/Badge';
 import { formatCurrency } from '../../../../core/util/format';
-
 interface Props {
   doctor: Doctor;
   onPress?: () => void;
 }
-
-/** Virtualised, memoised doctor list row. Memoize via React.memo in the list. */
 export const DoctorCard = React.memo(function DoctorCard({ doctor, onPress }: Props) {
   const theme = useThemeStore(s => s.theme);
   const c = theme.colors;
@@ -47,7 +44,6 @@ export const DoctorCard = React.memo(function DoctorCard({ doctor, onPress }: Pr
     </Pressable>
   );
 });
-
 const styles = StyleSheet.create({
   card: {
     flexDirection: 'row',
@@ -64,5 +60,4 @@ const styles = StyleSheet.create({
   row: { flexDirection: 'row', alignItems: 'center', marginTop: 6, gap: 8 },
   reviews: { fontSize: 12 },
 });
-
 export default DoctorCard;

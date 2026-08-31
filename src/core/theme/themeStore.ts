@@ -11,11 +11,6 @@ interface ThemeState {
   toggle: () => void;
 }
 
-/**
- * Theme store: holds the active theme mode and exposes a derived `theme` object.
- * Components subscribe to `theme` / `isDark` and re-render only on change
- * (Zustand selector-based memoization keeps this cheap).
- */
 export const useThemeStore = create<ThemeState>(set => ({
   mode: 'light',
   theme: themes.light,
@@ -33,7 +28,6 @@ export const useThemeStore = create<ThemeState>(set => ({
     }),
 }));
 
-/** Convenience hook returning the active AppTheme. */
 export function useAppTheme(): AppTheme {
   return useThemeStore(s => s.theme);
 }

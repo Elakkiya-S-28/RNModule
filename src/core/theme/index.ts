@@ -1,27 +1,13 @@
-/**
- * Central theme / design-system token definitions.
- * Supports light & dark modes via the exported `themes` map.
- *
- * The `Theme` type is the single source of truth for colors, spacing,
- * typography and radii across the app to keep the UI consistent.
- */
-
 export type ColorScheme = 'light' | 'dark';
 
 export interface ThemeColors {
-  /** Brand primary */
   primary: string;
-  /** Slightly darker variant for pressed states / gradients */
   primaryDark: string;
-  /** Accent used for highlights, badges, CTAs */
   accent: string;
-  /** Danger / error / destructive actions */
+  terracotta: string;
   danger: string;
-  /** Success */
   success: string;
-  /** Warning / caution */
   warning: string;
-  /** Info */
   info: string;
 
   background: string;
@@ -34,20 +20,17 @@ export interface ThemeColors {
   textMuted: string;
   textInverse: string;
 
-  /** Offline / muted banner background */
   offlineBg: string;
-  /** Overlay for modals */
   overlay: string;
-  /** Transparent helpers */
   transparent: string;
-
-  /** Semi-transparent row highlight */
   rowHighlight: string;
 
-  /** Tab bar colors */
   tabBarBg: string;
   tabBarActive: string;
   tabBarInactive: string;
+
+  bone: string;
+  boneHighlight: string;
 }
 
 export interface AppTheme {
@@ -103,41 +86,43 @@ const baseTypography = {
   caption: 11,
 };
 
-/** Ayurvedic-inspired palette */
 const brand = {
-  primary: '#1E734F',
-  primaryDark: '#145A3D',
-  accent: '#E9A13B',
+  primary: '#2F5233',
+  primaryDark: '#24402A',
+  accent: '#D98E29',
+  terracotta: '#B5583B',
 };
 
 export const lightTheme: AppTheme = {
   mode: 'light',
   colors: {
     ...brand,
-    accent: brand.accent,
-    danger: '#D64545',
-    success: '#2E9E5B',
-    warning: '#E9A13B',
-    info: '#3B7DD8',
+    danger: '#B5583B',
+    success: '#2F6B3F',
+    warning: '#D98E29',
+    info: '#3B6B7D',
 
-    background: '#F7F6F2',
+    background: '#FAF7F1',
     surface: '#FFFFFF',
-    surfaceAlt: '#F0EDE6',
-    border: '#E3DFD6',
+    surfaceAlt: '#F1EBE0',
+    border: '#E6DFD2',
 
-    text: '#1B1F1C',
-    textSecondary: '#4A504B',
-    textMuted: '#8A8F8A',
+    text: '#2A2822',
+    textSecondary: '#6B6558',
+    textMuted: '#9A937F',
     textInverse: '#FFFFFF',
 
-    offlineBg: '#FBF3DF',
-    overlay: 'rgba(0,0,0,0.45)',
+    offlineBg: '#F6E8CF',
+    overlay: 'rgba(42, 40, 34, 0.45)',
     transparent: 'transparent',
-    rowHighlight: 'rgba(30, 115, 79, 0.06)',
+    rowHighlight: 'rgba(47, 82, 51, 0.06)',
 
     tabBarBg: '#FFFFFF',
-    tabBarActive: '#1E734F',
-    tabBarInactive: '#8A8F8A',
+    tabBarActive: '#2F5233',
+    tabBarInactive: '#9A937F',
+
+    bone: '#EFE8DB',
+    boneHighlight: '#F9F5EC',
   },
   spacing: baseSpacing,
   radius: baseRadius,
@@ -148,31 +133,36 @@ export const lightTheme: AppTheme = {
 export const darkTheme: AppTheme = {
   mode: 'dark',
   colors: {
-    ...brand,
-    accent: '#F0B04F',
-    danger: '#E26060',
-    success: '#3FB672',
-    warning: '#F0B04F',
-    info: '#5B97E8',
+    primary: '#8FBE96',
+    primaryDark: '#6FA177',
+    accent: '#E8A94F',
+    terracotta: '#D0826A',
+    danger: '#E28570',
+    success: '#7FBF92',
+    warning: '#E8A94F',
+    info: '#7FA8BC',
 
-    background: '#121412',
-    surface: '#1B1E1B',
-    surfaceAlt: '#232724',
-    border: '#2E332F',
+    background: '#1C1B17',
+    surface: '#262521',
+    surfaceAlt: '#302E29',
+    border: '#3B3931',
 
-    text: '#EDEFEC',
-    textSecondary: '#BCC1BD',
-    textMuted: '#7C827D',
-    textInverse: '#1B1E1B',
+    text: '#F0EDE4',
+    textSecondary: '#BEB8A8',
+    textMuted: '#8B8577',
+    textInverse: '#26251F',
 
-    offlineBg: '#2B2413',
-    overlay: 'rgba(0,0,0,0.6)',
+    offlineBg: '#3A3222',
+    overlay: 'rgba(0, 0, 0, 0.6)',
     transparent: 'transparent',
-    rowHighlight: 'rgba(240, 176, 79, 0.08)',
+    rowHighlight: 'rgba(232, 169, 79, 0.08)',
 
-    tabBarBg: '#1B1E1B',
-    tabBarActive: '#7FCE9F',
-    tabBarInactive: '#7C827D',
+    tabBarBg: '#262521',
+    tabBarActive: '#E8A94F',
+    tabBarInactive: '#8B8577',
+
+    bone: '#302E29',
+    boneHighlight: '#3B3931',
   },
   spacing: baseSpacing,
   radius: baseRadius,

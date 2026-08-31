@@ -14,6 +14,16 @@ jest.mock('@react-native-community/netinfo', () => ({
     Promise.resolve({ isConnected: true, isInternetReachable: true, type: 'wifi', details: null }),
   ),
 }));
+
+// react-native-reanimated-skeleton pulls in native-only worklets that cannot
+// run under Jest; stub it with a static View-based placeholder.
+jest.mock('react-native-reanimated-skeleton', () => {
+  const React = require('react');
+  const { View } = require('react-native');
+  const SkeletonPlaceholder = props => React.createElement(View, { testID: 'skeleton', ...props });
+  SkeletonPlaceholder.displayName = 'SkeletonPlaceholder';
+  return { __esModule: true, default: SkeletonPlaceholder };
+});
 jest.mock('@react-native-async-storage/async-storage', () => {
   const store = {};
   return {

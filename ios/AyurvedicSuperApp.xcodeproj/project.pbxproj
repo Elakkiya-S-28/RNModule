@@ -7,6 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3F9EEF883758D1D283CF2413 /* Fraunces-400.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BB4A9BD8913426B82A032FDA /* Fraunces-400.ttf */; };
+		E0EAAC3A6A5D0340C2D9AF49 /* Fraunces-500.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F572498A812BFBC0EBF94C00 /* Fraunces-500.ttf */; };
+		9E7352667391BACDBBF5A528 /* Fraunces-600.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ADA9E70AC5F8F4F76CAEC42A /* Fraunces-600.ttf */; };
+		26A2A648E4ADBF0A165666C8 /* Fraunces-700.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C4D174CCA09EE9010970C69E /* Fraunces-700.ttf */; };
+		B53D01EBEB2014E77CE84442 /* Manrope-400.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C71E058C466B6BFB376243C6 /* Manrope-400.ttf */; };
+		E71753D652FDED89CA02A1C5 /* Manrope-500.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6B5E6A27C89EFDE11E04F1F7 /* Manrope-500.ttf */; };
+		8CC28829B21CD6A4F72F18B4 /* Manrope-600.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A62A42109CF9665B687C72AC /* Manrope-600.ttf */; };
+		400241167A236861F940C58F /* Manrope-700.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F224607627209258F6078235 /* Manrope-700.ttf */; };
+		914A7CA76C114404DE0698E2 /* Manrope-800.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 887A3D80D9F0F81A227DDB7F /* Manrope-800.ttf */; };
+		0637F3CD907D5345EFCA5F7F /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */; };
 		0C80B921A6F3F58F76C31292 /* libPods-AyurvedicSuperApp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DCACB8F33CDC322A6C60F78 /* libPods-AyurvedicSuperApp.a */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		761780ED2CA45674006654EE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761780EC2CA45674006654EE /* AppDelegate.swift */; };
@@ -14,16 +24,25 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		13B07F961A680F5B00A75B9A /* AyurvedicSuperApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "AyurvedicSuperApp.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = "AyurvedicSuperApp/Images.xcassets"; sourceTree = "<group>"; };
-		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = "AyurvedicSuperApp/Info.plist"; sourceTree = "<group>"; };
+		13B07F961A680F5B00A75B9A /* AyurvedicSuperApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AyurvedicSuperApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = AyurvedicSuperApp/Images.xcassets; sourceTree = "<group>"; };
+		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = AyurvedicSuperApp/Info.plist; sourceTree = "<group>"; };
 		13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = PrivacyInfo.xcprivacy; path = AyurvedicSuperApp/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		3B4392A12AC88292D35C810B /* Pods-AyurvedicSuperApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AyurvedicSuperApp.debug.xcconfig"; path = "Target Support Files/Pods-AyurvedicSuperApp/Pods-AyurvedicSuperApp.debug.xcconfig"; sourceTree = "<group>"; };
 		5709B34CF0A7D63546082F79 /* Pods-AyurvedicSuperApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AyurvedicSuperApp.release.xcconfig"; path = "Target Support Files/Pods-AyurvedicSuperApp/Pods-AyurvedicSuperApp.release.xcconfig"; sourceTree = "<group>"; };
 		5DCACB8F33CDC322A6C60F78 /* libPods-AyurvedicSuperApp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-AyurvedicSuperApp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		761780EC2CA45674006654EE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = AyurvedicSuperApp/AppDelegate.swift; sourceTree = "<group>"; };
-		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = "AyurvedicSuperApp/LaunchScreen.storyboard"; sourceTree = "<group>"; };
+		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = AyurvedicSuperApp/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		BB4A9BD8913426B82A032FDA /* Fraunces-400.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Fraunces-400.ttf"; path = AyurvedicSuperApp/Fonts/Fraunces-400.ttf; sourceTree = "<group>"; };
+		F572498A812BFBC0EBF94C00 /* Fraunces-500.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Fraunces-500.ttf"; path = AyurvedicSuperApp/Fonts/Fraunces-500.ttf; sourceTree = "<group>"; };
+		ADA9E70AC5F8F4F76CAEC42A /* Fraunces-600.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Fraunces-600.ttf"; path = AyurvedicSuperApp/Fonts/Fraunces-600.ttf; sourceTree = "<group>"; };
+		C4D174CCA09EE9010970C69E /* Fraunces-700.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Fraunces-700.ttf"; path = AyurvedicSuperApp/Fonts/Fraunces-700.ttf; sourceTree = "<group>"; };
+		C71E058C466B6BFB376243C6 /* Manrope-400.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Manrope-400.ttf"; path = AyurvedicSuperApp/Fonts/Manrope-400.ttf; sourceTree = "<group>"; };
+		6B5E6A27C89EFDE11E04F1F7 /* Manrope-500.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Manrope-500.ttf"; path = AyurvedicSuperApp/Fonts/Manrope-500.ttf; sourceTree = "<group>"; };
+		A62A42109CF9665B687C72AC /* Manrope-600.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Manrope-600.ttf"; path = AyurvedicSuperApp/Fonts/Manrope-600.ttf; sourceTree = "<group>"; };
+		F224607627209258F6078235 /* Manrope-700.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Manrope-700.ttf"; path = AyurvedicSuperApp/Fonts/Manrope-700.ttf; sourceTree = "<group>"; };
+		887A3D80D9F0F81A227DDB7F /* Manrope-800.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Manrope-800.ttf"; path = AyurvedicSuperApp/Fonts/Manrope-800.ttf; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -47,7 +66,7 @@
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */,
 			);
-			name = "AyurvedicSuperApp";
+			name = AyurvedicSuperApp;
 			sourceTree = "<group>";
 		};
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
@@ -116,8 +135,8 @@
 			);
 			dependencies = (
 			);
-			name = "AyurvedicSuperApp";
-			productName = "AyurvedicSuperApp";
+			name = AyurvedicSuperApp;
+			productName = AyurvedicSuperApp;
 			productReference = 13B07F961A680F5B00A75B9A /* AyurvedicSuperApp.app */;
 			productType = "com.apple.product-type.application";
 		};
@@ -159,6 +178,16 @@
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				0637F3CD907D5345EFCA5F7F /* PrivacyInfo.xcprivacy in Resources */,
+				3F9EEF883758D1D283CF2413 /* Fraunces-400.ttf in Resources */,
+				E0EAAC3A6A5D0340C2D9AF49 /* Fraunces-500.ttf in Resources */,
+				9E7352667391BACDBBF5A528 /* Fraunces-600.ttf in Resources */,
+				26A2A648E4ADBF0A165666C8 /* Fraunces-700.ttf in Resources */,
+				B53D01EBEB2014E77CE84442 /* Manrope-400.ttf in Resources */,
+				E71753D652FDED89CA02A1C5 /* Manrope-500.ttf in Resources */,
+				8CC28829B21CD6A4F72F18B4 /* Manrope-600.ttf in Resources */,
+				400241167A236861F940C58F /* Manrope-700.ttf in Resources */,
+				914A7CA76C114404DE0698E2 /* Manrope-800.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -259,8 +288,8 @@
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_BITCODE = NO;
-				INFOPLIST_FILE = "AyurvedicSuperApp/Info.plist";
-             INFOPLIST_KEY_CFBundleDisplayName = "Ayurvedic Super App";
+				INFOPLIST_FILE = AyurvedicSuperApp/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Ayurvedic Super App";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -273,7 +302,7 @@
 					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = "AyurvedicSuperApp";
+				PRODUCT_NAME = AyurvedicSuperApp;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -289,8 +318,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				INFOPLIST_FILE = "AyurvedicSuperApp/Info.plist";
-             INFOPLIST_KEY_CFBundleDisplayName = "Ayurvedic Super App";
+				INFOPLIST_FILE = AyurvedicSuperApp/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Ayurvedic Super App";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -303,7 +332,7 @@
 					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = "AyurvedicSuperApp";
+				PRODUCT_NAME = AyurvedicSuperApp;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -372,6 +401,10 @@
 				);
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = (
+					"$(inherited)",
+					"-DRCT_REMOVE_LEGACY_ARCH=1",
+				);
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(OTHER_CFLAGS)",
 					"-DFOLLY_NO_CONFIG",
@@ -379,8 +412,13 @@
 					"-DFOLLY_USE_LIBCPP=1",
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 					"-DFOLLY_HAVE_CLOCK_GETTIME=1",
+					"-DRCT_REMOVE_LEGACY_ARCH=1",
 				);
+				PODFILE_DIR = "$(SRCROOT)";
+				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) DEBUG";
+				USE_HERMES = true;
 			};
 			name = Debug;
 		};
@@ -437,6 +475,10 @@
 					"\"$(inherited)\"",
 				);
 				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_CFLAGS = (
+					"$(inherited)",
+					"-DRCT_REMOVE_LEGACY_ARCH=1",
+				);
 				OTHER_CPLUSPLUSFLAGS = (
 					"$(OTHER_CFLAGS)",
 					"-DFOLLY_NO_CONFIG",
@@ -444,8 +486,12 @@
 					"-DFOLLY_USE_LIBCPP=1",
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 					"-DFOLLY_HAVE_CLOCK_GETTIME=1",
+					"-DRCT_REMOVE_LEGACY_ARCH=1",
 				);
+				PODFILE_DIR = "$(SRCROOT)";
+				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
+				USE_HERMES = true;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;

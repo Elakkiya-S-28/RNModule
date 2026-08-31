@@ -18,12 +18,14 @@ interface DoctorListState {
   pageSize: number;
   hasMore: boolean;
   loading: boolean;
+  initialLoading: boolean;
   error: string | null;
   filters: DoctorFilters;
   sortBy: DoctorSort;
   search: string;
   listDoctors: (reset?: boolean) => Promise<void>;
   setSearch: (q: string) => void;
+  clearSearch: () => void;
   applyFilters: (f: Partial<DoctorFilters>, reset?: boolean) => void;
   toggleSpecialization: (s: Specialization) => void;
   setMode: (m: ConsultationMode | null) => void;
@@ -31,11 +33,8 @@ interface DoctorListState {
   clearFilters: () => void;
 }
 
-/**
- * Doctor listing store: handles search debouncing at the call-site, filter
- * composition, pagination and infinite-"load more" semantics. All data flows
- * through the API layer (with caching) for consistency.
- */
+let requestSeq = 0;
+
 export const useDoctorListStore = create<DoctorListState>((set, get) => ({
   doctors: [],
   total: 0,
@@ -44,21 +43,28 @@ export const useDoctorListStore = create<DoctorListState>((set, get) => ({
   pageSize: 10,
   hasMore: true,
   loading: false,
+  initialLoading: false,
   error: null,
   filters: {},
   sortBy: 'relevance',
   search: '',
 
-  listDoctors: async (reset = false) => {
+  listDoctors: async (reset = true) => {
     const state = get();
+    if (!reset) {
+      if (!state.hasMore || state.loading) return;
+    }
+    const seq = ++requestSeq;
     const page = reset ? 1 : state.page + 1;
-    if (!reset && !state.hasMore) return;
-    if (state.loading && !reset) return;
-    set({ loading: true, error: null });
+    set(
+      reset
+        ? { initialLoading: state.doctors.length === 0, loading: true, error: null }
+        : { loading: true, error: null },
+    );
 
     const filters: DoctorFilters = {
       ...state.filters,
-      query: state.search || undefined,
+      query: state.search.trim() || undefined,
     };
     try {
       const result: DoctorListResult = await consultationService.listDoctors(
@@ -67,23 +73,31 @@ export const useDoctorListStore = create<DoctorListState>((set, get) => ({
         state.pageSize,
         state.sortBy === 'relevance' ? undefined : state.sortBy,
       );
+      if (seq !== requestSeq) return;
       set(s => ({
         doctors: reset ? result.items : [...s.doctors, ...result.items],
         total: result.total,
         page,
         hasMore: page * state.pageSize < result.total,
-        loadedCount: reset ? result.items.length : s.doctors.length + result.items.length,
+        loadedCount: reset
+          ? result.items.length
+          : s.doctors.length + result.items.length,
         loading: false,
+        initialLoading: false,
       }));
     } catch (e) {
-      set({ loading: false, error: (e as Error).message || 'Failed to load doctors' });
+      if (seq !== requestSeq) return;
+      set({
+        loading: false,
+        initialLoading: false,
+        error: (e as Error).message || 'Failed to load doctors',
+      });
     }
   },
 
-  setSearch: q => {
-    set({ search: q });
-    get().listDoctors(true);
-  },
+  setSearch: q => set({ search: q }),
+
+  clearSearch: () => set({ search: '' }),
 
   applyFilters: (f, reset = true) => {
     set(state => ({ filters: { ...state.filters, ...f } }));
@@ -111,4 +125,8 @@ export const useDoctorListStore = create<DoctorListState>((set, get) => ({
 
 export function useDoctors(): Doctor[] {
   return useDoctorListStore(s => s.doctors);
+}
+
+export function useDoctorSearch(): string {
+  return useDoctorListStore(s => s.search);
 }

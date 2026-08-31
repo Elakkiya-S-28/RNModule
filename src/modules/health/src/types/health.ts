@@ -1,5 +1,3 @@
-/** Health Records module domain types. */
-
 export type RecordKind =
   | 'lab-report'
   | 'prescription'
@@ -14,21 +12,21 @@ export interface HealthRecord {
   kind: RecordKind;
   title: string;
   provider: string;
-  /** Epoch ms of the event. */
+
   dateTs: number;
   notes: string;
   tags: string[];
-  /** Attachments: image urls or data-uris / pdf references. */
+
   attachments: Attachment[];
   status: RecordStatus;
-  /** Stored for testability. */
+
   values?: { key: string; value: string }[];
 }
 
 export interface Attachment {
   id: string;
   type: 'image' | 'pdf' | 'doc';
-  /** Local or remote path. For images, a uri usable by <Image>. */
+
   uri: string;
   name: string;
 }
@@ -41,10 +39,9 @@ export interface HealthFilters {
   beforeTs?: number | null;
 }
 
-/** Grouped view: month-year label -> records sorted desc. */
 export interface HealthGroup {
-  label: string; // "Aug 2026"
+  label: string;
   year: number;
-  month: number; // 1-12
+  month: number;
   records: HealthRecord[];
 }

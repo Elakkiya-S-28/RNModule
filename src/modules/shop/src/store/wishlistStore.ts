@@ -5,10 +5,11 @@ import { storage } from '../../../../core/db/storage';
 interface WishlistState {
   productIds: string[];
   toggle: (productId: string) => void;
+  add: (productId: string) => void;
   remove: (productId: string) => void;
+  clear: () => void;
 }
 
-/** Persisted wishlist — pure local state. */
 export const useWishlistStore = create<WishlistState>()(
   persist(
     set => ({
@@ -19,14 +20,24 @@ export const useWishlistStore = create<WishlistState>()(
             ? state.productIds.filter(id => id !== productId)
             : [...state.productIds, productId],
         })),
+      add: productId =>
+        set(state =>
+          state.productIds.includes(productId)
+            ? state
+            : { productIds: [...state.productIds, productId] },
+        ),
       remove: productId =>
         set(state => ({ productIds: state.productIds.filter(id => id !== productId) })),
+      clear: () => set({ productIds: [] }),
     }),
     { name: 'wishlist-store', storage: createJSONStorage(() => storage as never) },
   ),
 );
 
-/** Selector: is a given product currently wished. */
+export function useWishlistProducts(): string[] {
+  return useWishlistStore(s => s.productIds);
+}
+
 export function isWished(productId: string): boolean {
   return useWishlistStore.getState().productIds.includes(productId);
 }

@@ -1,10 +1,3 @@
-/**
- * Localization — Bonus (2 languages: English & Hindi).
- *
- * A lightweight i18n helper that resolves strings from a dictionary keyed by
- * locale. The active locale is stored in the theme/connectivity layer so the
- * UI can re-render on change.
- */
 
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
@@ -73,7 +66,6 @@ export const useI18n = create<I18nState>()(
   ),
 );
 
-/** Imperative translate helper usable outside React. */
 export function translate(key: string): string {
   const locale = useI18n.getState().locale;
   return dict[locale][key] ?? key;

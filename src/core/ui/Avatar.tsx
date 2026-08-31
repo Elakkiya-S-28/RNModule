@@ -5,12 +5,11 @@ import { initialsFromName } from '../util/format';
 
 interface Props {
   name?: string;
-  /** Optional remote image URL. Falls back to initial letters. */
+
   uri?: string | null;
   size?: number;
 }
 
-/** Round avatar: shows an image if available, otherwise coloured initials. */
 export function Avatar({ name, uri, size = 48 }: Props) {
   const theme = useThemeStore(s => s.theme);
   const c = theme.colors;

@@ -7,6 +7,8 @@ apply plugin: "com.facebook.react"
  * By default you don't need to apply any configuration, just uncomment the lines you need.
  */
 react {
+    /* Bundling */
+    // bundleAssetName defaults to "index.android.bundle"
     /* Folders */
     //   The root of your project, i.e. where "package.json" lives. Default is '../..'
     // root = file("../../")
@@ -78,6 +80,11 @@ android {
     compileSdk rootProject.ext.compileSdkVersion
 
     namespace "com.rnmodules"
+    sourceSets {
+        main {
+            assets.srcDirs += ["$rootDir/../assets"]
+        }
+    }
     defaultConfig {
         applicationId "com.rnmodules"
         minSdkVersion rootProject.ext.minSdkVersion

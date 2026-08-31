@@ -20,7 +20,6 @@ const toneMap: Record<BadgeTone, string> = {
   neutral: 'textMuted',
 };
 
-/** Small pill badge / label. */
 export function Badge({ label, tone = 'neutral', style, small = false }: Props) {
   const theme = useThemeStore(s => s.theme);
   const c = theme.colors;

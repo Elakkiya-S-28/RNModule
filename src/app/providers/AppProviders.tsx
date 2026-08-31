@@ -16,25 +16,15 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 const RootStack = createNativeStackNavigator<RootStackParamList>();
 
-/**
- * App-wide provider chain:
- *  - Theme store hydration (light/dark).
- *  - Connectivity subscription + automatic offline-queue sync on reconnect
- *    and on app foreground (Background Synchronisation bonus feature).
- *
- * Wrapped as a component so it can live below the NavigationContainer.
- */
 export function AppProviders({ children }: { children: React.ReactNode }) {
   const theme = useThemeStore(s => s.theme);
   const online = useIsOnline();
 
-  // Hydrate connectivity listener once.
   useEffect(() => {
     const unsub = useConnectivityStore.getState().initialize();
     return unsub;
   }, []);
 
-  // Auto-sync when we become online or the app returns to foreground.
   useEffect(() => {
     if (!online) return;
     const timer = setTimeout(() => {

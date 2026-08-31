@@ -17,19 +17,22 @@ interface ProductListState {
   pageSize: number;
   hasMore: boolean;
   loading: boolean;
+  initialLoading: boolean;
   error: string | null;
   filters: ProductFilters;
   sort: SortOption;
   search: string;
   load: (reset?: boolean) => Promise<void>;
   setSearch: (q: string) => void;
+  clearSearch: () => void;
   applyFilters: (f: Partial<ProductFilters>, reset?: boolean) => void;
   toggleCategory: (cat: ProductCategory) => void;
   setSort: (sort: SortOption) => void;
   clearFilters: () => void;
 }
 
-/** Shop product feed store: infinite scroll + filters + sorting. */
+let requestSeq = 0;
+
 export const useProductListStore = create<ProductListState>((set, get) => ({
   products: [],
   total: 0,
@@ -38,43 +41,48 @@ export const useProductListStore = create<ProductListState>((set, get) => ({
   pageSize: 12,
   hasMore: true,
   loading: false,
+  initialLoading: false,
   error: null,
   filters: {},
   sort: 'relevance',
   search: '',
 
-  load: async (reset = false) => {
+  load: async (reset = true) => {
     const s = get();
+    if (!reset) {
+      if (!s.hasMore || s.loading) return;
+    }
+    const seq = ++requestSeq;
     const page = reset ? 1 : s.page + 1;
-    if (!reset && !s.hasMore) return;
-    if (s.loading && !reset) return;
-    set({ loading: true, error: null });
-    const filters: ProductFilters = { ...s.filters, query: s.search || undefined };
+    set(
+      reset
+        ? { initialLoading: s.products.length === 0, loading: true, error: null }
+        : { loading: true, error: null },
+    );
+    const filters: ProductFilters = { ...s.filters, query: s.search.trim() || undefined };
     try {
-      const result = await shopService.listProducts(
-        filters,
-        page,
-        s.pageSize,
-        s.sort,
-        true,
-      );
+      const result = await shopService.listProducts(filters, page, s.pageSize, s.sort, true);
+      if (seq !== requestSeq) return;
       set(prev => ({
         products: reset ? result.items : [...prev.products, ...result.items],
         total: result.total,
         page,
         hasMore: result.hasMore,
-        loadedCount: reset ? result.items.length : prev.products.length + result.items.length,
+        loadedCount: reset
+          ? result.items.length
+          : prev.products.length + result.items.length,
         loading: false,
+        initialLoading: false,
       }));
     } catch (e) {
-      set({ loading: false, error: (e as Error).message });
+      if (seq !== requestSeq) return;
+      set({ loading: false, initialLoading: false, error: (e as Error).message });
     }
   },
 
-  setSearch: q => {
-    set({ search: q });
-    get().load(true);
-  },
+  setSearch: q => set({ search: q }),
+
+  clearSearch: () => set({ search: '' }),
 
   applyFilters: (f, reset = true) => {
     set(state => ({ filters: { ...state.filters, ...f } }));
@@ -100,4 +108,8 @@ export const useProductListStore = create<ProductListState>((set, get) => ({
 
 export function useProducts(): Product[] {
   return useProductListStore(s => s.products);
+}
+
+export function useProductSearch(): string {
+  return useProductListStore(s => s.search);
 }

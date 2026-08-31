@@ -1,10 +1,3 @@
-/**
- * Lightweight structured logging utility.
- *
- * - Colors output by severity for readability in Metro logs.
- * - Optionally captures logs into an in-memory ring buffer (for debugging / crash reports).
- * - `enabled` flag can be toggled at runtime / via remote config (bonus feature).
- */
 
 export type LogLevel = 'debug' | 'info' | 'warn' | 'error';
 
@@ -35,7 +28,7 @@ class Logger {
   private readonly maxBuffer = 200;
 
   enabled = true;
-  /** Only log entries at or above this level. */
+
   minLevel: LogLevel = 'debug';
 
   private shouldLog(level: LogLevel): boolean {
@@ -56,7 +49,7 @@ class Logger {
     this.push(entry);
     const color = LEVEL_COLOR[level];
     const ctx = context ? ` ${JSON.stringify(context)}` : '';
-    // eslint-disable-next-line no-console
+
     console[level === 'debug' ? 'log' : level](`${color}[${level.toUpperCase()}]${RESET} ${message}${ctx}`);
   }
 
@@ -76,7 +69,6 @@ class Logger {
     this.write('error', message, context);
   }
 
-  /** Returns recent buffered logs (useful for "what happened before" on errors). */
   getBuffer(): ReadonlyArray<LogEntry> {
     return this.buffer.slice();
   }

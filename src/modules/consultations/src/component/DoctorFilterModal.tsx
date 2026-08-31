@@ -5,7 +5,6 @@ import { Button } from '../../../../core/ui/Button';
 import { ChipRow } from '../../../../core/ui/Chip';
 import { useDoctorListStore } from '../store/doctorListStore';
 import { Specialization, ConsultationMode } from '../types/ct';
-
 const SPECIALIZATIONS: Specialization[] = [
   'General Physician', 'Cardiology', 'Pulmonology', 'Neurology', 'Dermatology',
   'Pediatrics', 'Orthopedics', 'Gastroenterology', 'Gynecology', 'ENT',
@@ -23,13 +22,10 @@ const RATINGS = [
   { label: '3.5+', value: 3.5 },
   { label: 'Any', value: 0 },
 ];
-
 interface Props {
   visible: boolean;
   onClose: () => void;
 }
-
-/** Module 1 — filter sheet for the doctor explorer (speciality/fee/rating/mode). */
 export function DoctorFilterModal({ visible, onClose }: Props) {
   const theme = useThemeStore(s => s.theme);
   const c = theme.colors;
@@ -106,7 +102,6 @@ export function DoctorFilterModal({ visible, onClose }: Props) {
     </Modal>
   );
 }
-
 const styles = StyleSheet.create({
   backdrop: { flex: 1, backgroundColor: 'rgba(0,0,0,0.4)' },
   sheet: {
@@ -120,5 +115,4 @@ const styles = StyleSheet.create({
   label: { fontSize: 13, fontWeight: '600', marginTop: 16, marginBottom: 8 },
   actions: { flexDirection: 'row', justifyContent: 'space-between', marginTop: 20 },
 });
-
 export default DoctorFilterModal;

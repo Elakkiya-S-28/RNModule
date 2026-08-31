@@ -1,8 +1,8 @@
 import React from 'react';
 import { createNativeStackNavigator, NativeStackScreenProps } from '@react-navigation/native-stack';
 import { HealthStackParamList } from '../../../../app/navigation/types';
-import { HealthTimelineScreen } from '../screens/HealthTimelineScreen';
-import { RecordDetailScreen } from '../screens/RecordDetailScreen';
+import { HealthTimelineScreen } from '../container/HealthTimelineScreen';
+import { RecordDetailScreen } from '../container/RecordDetailScreen';
 import { getRecordById } from '../services/healthRepo';
 
 const Stack = createNativeStackNavigator<HealthStackParamList>();

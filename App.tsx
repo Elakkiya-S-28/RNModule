@@ -1,10 +1,3 @@
-/**
- * @format
- * Ayurvedic Super App root.
- *
- * Composes the global providers: theme, connectivity/sync, navigation, error
- * boundary, offline banner and toast container.
- */
 
 import React, { useEffect } from 'react';
 import { StatusBar, StyleSheet, Text, View, useColorScheme } from 'react-native';
@@ -19,7 +12,6 @@ function App() {
   const sysScheme = useColorScheme();
   const setMode = useThemeStore(s => s.setMode);
 
-  // React to system light/dark preference.
   useEffect(() => {
     setMode(sysScheme === 'dark' ? 'dark' : 'light');
   }, [sysScheme, setMode]);

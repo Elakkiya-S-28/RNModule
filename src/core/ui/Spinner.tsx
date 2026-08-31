@@ -7,7 +7,6 @@ interface Props {
   style?: StyleProp<ViewStyle>;
 }
 
-/** Centered loading state with optional label. */
 export function Spinner({ label, style }: Props) {
   const theme = useThemeStore(s => s.theme);
   const c = theme.colors;

@@ -1,7 +1,3 @@
-/**
- * Mock data source for the Health Records module: 10,000 lazily-materialised
- * records grouped by month/year, with filter + search support.
- */
 
 import {
   HealthRecord,
@@ -36,7 +32,7 @@ export function getRecordByRank(rank: number): HealthRecord {
   const kind = KINDS[Math.floor(rng() * KINDS.length)];
   const titles = TITLES[kind];
   const title = titles[Math.floor(rng() * titles.length)];
-  const daysAgo = Math.floor(rng() * 1095); // up to ~3 years
+  const daysAgo = Math.floor(rng() * 1095);
   const dateTs = Date.now() - daysAgo * 86400000;
   const provider = PROVIDERS[Math.floor(rng() * PROVIDERS.length)];
   const status =
@@ -82,7 +78,6 @@ export function getRecordByRank(rank: number): HealthRecord {
   return record;
 }
 
-/** Retrieve records matching filters, returning a flat (unsorted) array. */
 export function queryRecords(filters: HealthFilters = {}): HealthRecord[] {
   const out: HealthRecord[] = [];
   for (let i = 0; i < HEALTH_RECORD_COUNT; i++) {
@@ -93,7 +88,6 @@ export function queryRecords(filters: HealthFilters = {}): HealthRecord[] {
   return out;
 }
 
-/** Group a flat record list by month + year, newest group first. */
 export function groupByMonth(records: HealthRecord[]): HealthGroup[] {
   const map = new Map<string, HealthGroup>();
   for (const r of records) {
@@ -123,7 +117,6 @@ export function getRecordById(id: string): HealthRecord | null {
   return getRecordByRank(rank);
 }
 
-/** Distinct tags across the pool (sampled, bounded for UI). */
 export function getAllRecordTags(): string[] {
   return TAGS_POOL;
 }

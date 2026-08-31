@@ -9,7 +9,6 @@ interface Props {
   style?: StyleProp<ViewStyle>;
 }
 
-/** shown when lists are empty / filters return no rows. */
 export function EmptyState({ icon, title, message, style }: Props) {
   const theme = useThemeStore(s => s.theme);
   const c = theme.colors;

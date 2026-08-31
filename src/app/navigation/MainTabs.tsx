@@ -15,10 +15,6 @@ const TAB_ICONS: Record<keyof MainTabParamList, string> = {
   Health: '📁',
 };
 
-/**
- * Root bottom tab navigator — hosts the three independent modules.
- * Tab bar colours come from the active theme (dark-mode aware).
- */
 export function MainTabs() {
   const theme = useThemeStore(s => s.theme);
   const c = theme.colors;

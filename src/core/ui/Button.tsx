@@ -33,7 +33,6 @@ const variantColors: Record<
   danger: { background: 'danger', text: 'textInverse' },
 };
 
-/** Reusable button honouring the active theme. */
 export function Button({
   label,
   onPress,

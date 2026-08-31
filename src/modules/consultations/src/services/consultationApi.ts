@@ -10,17 +10,21 @@ import {
 import { logger } from '../../../../core/logger';
 import { toast } from '../../../../core/toast';
 
-// Route the shared API client through the mock transport. The transport is
-// also wired centrally in AppProviders/bootstrap for import-order safety.
 api.useTransport(mockTransport);
 
 const PATIENT_NAME = 'Patient Sharma';
 
-async function listDoctors(filters: DoctorFilters, page: number, pageSize: number, sortBy?: string): Promise<DoctorListResult> {
+async function listDoctors(
+  filters: DoctorFilters,
+  page: number,
+  pageSize: number,
+  sortBy?: string,
+): Promise<DoctorListResult> {
   const base = `doctors?page=${page}&pageSize=${pageSize}`;
   const qs = new URLSearchParams();
   if (filters.query) qs.set('query', filters.query);
-  if (filters.specializations?.length) qs.set('specializations', JSON.stringify(filters.specializations));
+  if (filters.specializations?.length)
+    qs.set('specializations', JSON.stringify(filters.specializations));
   if (filters.maxFee != null) qs.set('maxFee', String(filters.maxFee));
   if (filters.minRating != null) qs.set('minRating', String(filters.minRating));
   if (filters.mode) qs.set('mode', filters.mode);
@@ -35,7 +39,18 @@ async function listDoctors(filters: DoctorFilters, page: number, pageSize: numbe
   });
 }
 
-async function getDoctorDetails(doctorId: string, dateISO: string): Promise<{ doctor: Doctor; slots: Slot[] }> {
+async function getDoctor(doctorId: string): Promise<Doctor> {
+  const res = await api.get<{ doctor: Doctor }>(`doctors/${doctorId}`, {
+    cacheKey: `doctor:${doctorId}`,
+    cacheTtlMs: 5 * 60 * 1000,
+  });
+  return res.doctor;
+}
+
+async function getDoctorDetails(
+  doctorId: string,
+  dateISO: string,
+): Promise<{ doctor: Doctor; slots: Slot[] }> {
   const url = `doctors/${doctorId}?date=${dateISO}`;
   return api.get<{ doctor: Doctor; slots: Slot[] }>(url, {
     cacheKey: `doctor:${doctorId}:${dateISO}`,
@@ -43,20 +58,24 @@ async function getDoctorDetails(doctorId: string, dateISO: string): Promise<{ do
   });
 }
 
-/**
- * Book a slot. Returns the created booking. When offline, the request is
- * queued by the ApiClient and we optimistically create the booking locally.
- */
-async function bookSlot(doctor: Doctor, slot: Slot, reason?: string): Promise<Booking> {
+async function bookSlot(
+  doctor: Doctor,
+  slot: Slot,
+  reason?: string,
+): Promise<Booking> {
   try {
-    await api.post(`doctors/${doctor.id}/book`, {
-      slotId: slot.id,
-      patientName: PATIENT_NAME,
-      reason,
-      dateISO: slot.dateISO,
-      startMinutes: slot.startMinutes,
-      mode: slot.mode,
-    }, { timeout: 5000, retries: 1 });
+    await api.post(
+      `doctors/${doctor.id}/book`,
+      {
+        slotId: slot.id,
+        patientName: PATIENT_NAME,
+        reason,
+        dateISO: slot.dateISO,
+        startMinutes: slot.startMinutes,
+        mode: slot.mode,
+      },
+      { timeout: 5000, retries: 1 },
+    );
   } catch (err) {
     logger.warn(`Book request queued/relaxed: ${JSON.stringify(err)}`);
   }
@@ -92,6 +111,7 @@ async function syncOffline(): Promise<{ flushed: number; remaining: number }> {
 
 export const consultationService = {
   listDoctors,
+  getDoctor,
   getDoctorDetails,
   bookSlot,
   cancelBooking,
@@ -101,7 +121,10 @@ export const consultationService = {
 export function notifySync(): void {
   syncOffline()
     .then(({ flushed, remaining }) => {
-      if (flushed > 0) toast.success(`Synced ${flushed} offline ${flushed === 1 ? 'item' : 'items'}`);
+      if (flushed > 0)
+        toast.success(
+          `Synced ${flushed} offline ${flushed === 1 ? 'item' : 'items'}`,
+        );
       else if (remaining > 0) toast.warning(`Still ${remaining} to sync`);
     })
     .catch(() => toast.error('Could not sync. Will retry.'));

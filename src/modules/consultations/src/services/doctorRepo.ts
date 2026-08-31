@@ -1,9 +1,3 @@
-/**
- * Mock data source for the Consultations module.
- * Provides a deterministic, lazily-materialised pool of 5,000 doctors and
- * slot generation helpers. Rather than returning a giant array, callers
- * paginate via `getDoctorsPage`.
- */
 
 import {
   Doctor,
@@ -40,7 +34,6 @@ const BIO =
 
 const doctorCache = new Map<number, Doctor>();
 
-/** Materialise one doctor (cached) by rank. rank in [0, DOCTOR_COUNT). */
 export function getDoctorByRank(rank: number): Doctor {
   const cached = doctorCache.get(rank);
   if (cached) return cached;
@@ -48,7 +41,6 @@ export function getDoctorByRank(rank: number): Doctor {
   const name = `${INDIAN_NAMES[Math.floor(rng() * INDIAN_NAMES.length)]}${rank % 57}`;
   const spec = SPECIALIZATIONS[Math.floor(rng() * SPECIALIZATIONS.length)];
 
-  // Weekly availability: produce ~3-6 free slots per day for the next 14 days.
   const availability: Record<string, number[]> = {};
   const today = new Date();
   for (let d = 0; d < 14; d++) {
@@ -85,7 +77,6 @@ export function getDoctorByRank(rank: number): Doctor {
 
 const slotCache = new Map<string, Slot>();
 
-/** Materialise a slot for a doctor/date/start-map entry. */
 export function getSlot(
   doctor: Doctor,
   dateISO: string,
@@ -117,10 +108,6 @@ function hashKey(input: string): string {
   return (h >>> 0).toString(36);
 }
 
-/**
- * Generate the slots for one doctor on a given date, filtered by mode.
- * Skips past slots and pre-booked ones unless includeBooked is true.
- */
 export function getDoctorSlots(
   doctor: Doctor,
   dateISO: string,
@@ -134,7 +121,7 @@ export function getDoctorSlots(
   const slots: Slot[] = [];
   for (const m of minutes) {
     const slotTs = dateStart + m * 60000;
-    if (slotTs <= now) continue; // expired
+    if (slotTs <= now) continue;
     for (const md of modes) {
       const slot = getSlot(doctor, dateISO, m, md);
       if (!includeBooked && slot.isBooked) continue;
@@ -145,7 +132,6 @@ export function getDoctorSlots(
   return slots;
 }
 
-/** Central segmented query: returns doctors for a page. */
 export function getDoctorsPage(
   page: number,
   pageSize: number,

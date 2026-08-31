@@ -13,7 +13,6 @@ interface Props extends TextInputProps {
   error?: string | null;
 }
 
-/** Themed text input with optional floating label + error message. */
 export function TextInput({ label, error, style, ...rest }: Props) {
   const theme = useThemeStore(s => s.theme);
   const c = theme.colors;

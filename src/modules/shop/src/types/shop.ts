@@ -1,5 +1,3 @@
-/** Shop module domain types. */
-
 export type ProductCategory =
   | 'Herbal Supplements'
   | 'Oils'
@@ -16,7 +14,7 @@ export interface Product {
   category: ProductCategory;
   brand: string;
   price: number;
-  /** Original price pre-discount (for strikethrough). */
+
   mrp: number;
   rating: number;
   reviewsCount: number;

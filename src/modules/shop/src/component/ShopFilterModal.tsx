@@ -6,7 +6,6 @@ import { ChipRow } from '../../../../core/ui/Chip';
 import { useProductListStore } from '../store/productListStore';
 import { PRODUCT_CATEGORIES } from '../services/productRepo';
 import { ProductCategory, SortOption } from '../types/shop';
-
 const CATEGORY_OPTIONS: { label: string; value: string }[] = PRODUCT_CATEGORIES.map(
   cat => ({ label: cat, value: cat }),
 );
@@ -22,13 +21,10 @@ const PRICE_BANDS = [
   { label: 'Under ₹1000', value: '1000' },
   { label: 'Any', value: '0' },
 ];
-
 interface Props {
   visible: boolean;
   onClose: () => void;
 }
-
-/** Module 2 — filter + sort sheet for the shop catalog. */
 export function ShopFilterModal({ visible, onClose }: Props) {
   const theme = useThemeStore(s => s.theme);
   const c = theme.colors;
@@ -91,7 +87,6 @@ export function ShopFilterModal({ visible, onClose }: Props) {
     </Modal>
   );
 }
-
 const styles = StyleSheet.create({
   backdrop: { flex: 1, backgroundColor: 'rgba(0,0,0,0.4)' },
   sheet: { borderTopLeftRadius: 20, borderTopRightRadius: 20, padding: 20, paddingBottom: 32, maxHeight: '78%' },
@@ -99,5 +94,4 @@ const styles = StyleSheet.create({
   label: { fontSize: 13, fontWeight: '600', marginTop: 16, marginBottom: 8 },
   actions: { flexDirection: 'row', justifyContent: 'space-between', marginTop: 20 },
 });
-
 export default ShopFilterModal;

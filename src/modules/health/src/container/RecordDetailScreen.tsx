@@ -6,13 +6,10 @@ import { Badge } from '../../../../core/ui/Badge';
 import { Card } from '../../../../core/ui/Card';
 import { healthService } from '../services/healthApi';
 import { HealthRecord } from '../types/health';
-
 interface Props {
   record: HealthRecord | null;
   onBack: () => void;
 }
-
-/** Module 3 — record detail with values and attachment preview thumbnails. */
 export function RecordDetailScreen({ record, onBack }: Props) {
   const theme = useThemeStore(s => s.theme);
   const c = theme.colors;
@@ -91,7 +88,6 @@ export function RecordDetailScreen({ record, onBack }: Props) {
     </View>
   );
 }
-
 const styles = StyleSheet.create({
   content: { padding: 16, paddingBottom: 40 },
   title: { fontSize: 20, fontWeight: '700' },
@@ -102,5 +98,4 @@ const styles = StyleSheet.create({
   attachRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 10 },
   attach: { borderWidth: 1, borderRadius: 12, padding: 12, width: 100, alignItems: 'center' },
 });
-
 export default RecordDetailScreen;

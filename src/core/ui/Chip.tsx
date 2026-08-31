@@ -8,7 +8,6 @@ interface ChipProps {
   onPress?: () => void;
 }
 
-/** Single selectable chip. */
 export function Chip({ label, selected, onPress }: ChipProps) {
   const theme = useThemeStore(s => s.theme);
   const c = theme.colors;
@@ -42,7 +41,6 @@ interface ChipRowProps {
   style?: StyleProp<ViewStyle>;
 }
 
-/** Horizontal scrollable row of filter chips (single or multi select). */
 export function ChipRow({ options, value, onSelect, multi = false, style }: ChipRowProps) {
   const isSelected = (v: string) =>
     multi ? Array.isArray(value) && value.includes(v) : value === v;

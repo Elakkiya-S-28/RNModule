@@ -2,16 +2,17 @@ import React from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useThemeStore } from '../theme/themeStore';
+import { type as fontType } from '../theme/fonts';
+
+export const APP_NAME = 'Ayurvedic Super App';
 
 interface Props {
-  title: string;
+  title?: string;
   subtitle?: string;
-  /** Optional left accessory (usually a back button). */
   onBack?: () => void;
   right?: React.ReactNode;
 }
 
-/** Top app bar with back affordance + right slot. */
 export function AppBar({ title, subtitle, onBack, right }: Props) {
   const insets = useSafeAreaInsets();
   const theme = useThemeStore(s => s.theme);
@@ -30,7 +31,10 @@ export function AppBar({ title, subtitle, onBack, right }: Props) {
             accessibilityRole="button"
             accessibilityLabel="Back"
             hitSlop={10}
-            style={({ pressed }) => [styles.backBtn, { backgroundColor: c.surface, opacity: pressed ? 0.8 : 1 }]}
+            style={({ pressed }) => [
+              styles.backBtn,
+              { backgroundColor: c.surface, borderColor: c.border, opacity: pressed ? 0.8 : 1 },
+            ]}
           >
             <Text style={[styles.backIcon, { color: c.text }]}>‹</Text>
           </Pressable>
@@ -39,7 +43,7 @@ export function AppBar({ title, subtitle, onBack, right }: Props) {
         )}
         <View style={styles.titleWrap}>
           <Text numberOfLines={1} style={[styles.title, { color: c.text }]}>
-            {title}
+            {title ?? APP_NAME}
           </Text>
           {subtitle ? (
             <Text numberOfLines={1} style={[styles.subtitle, { color: c.textSecondary }]}>
@@ -56,12 +60,20 @@ export function AppBar({ title, subtitle, onBack, right }: Props) {
 const styles = StyleSheet.create({
   container: { paddingHorizontal: 16, paddingBottom: 8 },
   inner: { flexDirection: 'row', alignItems: 'center' },
-  backBtn: { width: 38, height: 38, borderRadius: 19, alignItems: 'center', justifyContent: 'center', marginRight: 10 },
+  backBtn: {
+    width: 38,
+    height: 38,
+    borderRadius: 19,
+    borderWidth: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 10,
+  },
   backBtnSpacer: { width: 38, marginRight: 10 },
-  backIcon: { fontSize: 30, lineHeight: 34, fontWeight: '600', marginTop: -3 },
+  backIcon: { fontSize: 30, lineHeight: 34, marginTop: -3 },
   titleWrap: { flex: 1 },
-  title: { fontSize: 19, fontWeight: '700' },
-  subtitle: { fontSize: 12, marginTop: 1 },
+  title: { ...fontType.appTitle },
+  subtitle: { ...fontType.caption, marginTop: 1 },
   right: { marginLeft: 10 },
 });
 
