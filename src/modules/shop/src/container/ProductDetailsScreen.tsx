@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Animated, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useThemeStore } from '../../../../core/theme/themeStore';
 import { AppBar } from '../../../../core/ui/AppBar';
 import { Badge } from '../../../../core/ui/Badge';
@@ -10,6 +10,7 @@ import { formatCurrency } from '../../../../core/util/format';
 import { type as fontType } from '../../../../core/theme/fonts';
 import { useCartStore } from '../store/cartStore';
 import { useWishlistStore } from '../store/wishlistStore';
+import { usePop } from '../../../../core/util/motion';
 import { Product } from '../types/shop';
 
 interface Props {
@@ -29,6 +30,7 @@ export function ProductDetailsScreen({ product, onBack }: Props) {
     s => (product ? s.productIds.includes(product.id) : false),
   );
   const [selectedQty, setSelectedQty] = useState(1);
+  const cartPop = usePop(inCartQty);
 
   const outOfStock = useMemo(() => (product ? product.stock <= 0 : true), [product]);
 
@@ -104,8 +106,14 @@ export function ProductDetailsScreen({ product, onBack }: Props) {
         <View style={styles.qtySection}>
           <View style={styles.qtyLabels}>
             <Text style={[styles.sectionTitle, { color: c.text, marginTop: 0 }]}>Quantity</Text>
-            {inCartQty > 0 ? (
-              <Badge label={`${inCartQty} already in cart`} tone="success" small />
+                        {inCartQty > 0 ? (
+              <Animated.View style={{ transform: [{ scale: cartPop }] }}>
+                <Badge
+                  label={`${inCartQty} already in cart`}
+                  tone="success"
+                  small
+                />
+              </Animated.View>
             ) : null}
           </View>
           <QtyStepper

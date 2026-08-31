@@ -1,6 +1,6 @@
 export const Fonts = {
-  serif: 'Fraunces',
-  sans: 'Manrope',
+  serif: 'Inter',
+  sans: 'Inter',
 } as const;
 
 export type FontFamily = (typeof Fonts)[keyof typeof Fonts];
@@ -11,16 +11,16 @@ type Family = 'serif' | 'sans';
 
 export function font(family: Family, weight: Weight = 400): string {
   if (family === 'serif') {
-    if (weight <= 400) return 'Fraunces';
-    if (weight <= 500) return 'Fraunces Medium';
-    if (weight <= 600) return 'Fraunces SemiBold';
-    return 'Fraunces Bold';
+    if (weight <= 400) return 'Inter';
+    if (weight <= 500) return 'Inter Medium';
+    if (weight <= 600) return 'Inter SemiBold';
+    return 'Inter Bold';
   }
-  if (weight <= 400) return 'Manrope';
-  if (weight <= 500) return 'Manrope Medium';
-  if (weight <= 600) return 'Manrope SemiBold';
-  if (weight <= 700) return 'Manrope Bold';
-  return 'Manrope ExtraBold';
+  if (weight <= 400) return 'Inter';
+  if (weight <= 500) return 'Inter Medium';
+  if (weight <= 600) return 'Inter SemiBold';
+  if (weight <= 700) return 'Inter Bold';
+  return 'Inter Bold';
 }
 
 export const type = {

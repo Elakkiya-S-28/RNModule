@@ -1,67 +1,46 @@
 import React from 'react';
-import Skeleton from 'react-native-reanimated-skeleton';
-import { ICustomViewStyle } from 'react-native-reanimated-skeleton/lib/typescript/constants';
-import { useThemeStore } from '../theme/themeStore';
-import { ViewStyle, StyleProp } from 'react-native';
+import { StyleProp, ViewStyle } from 'react-native';
+import { SkeletonBox, SkeletonGroup, SkeletonText, SkeletonPlaceholder } from './SkeletonPrimitives';
+import { ProductGridSkeleton, productCardSkeleton } from './skeletons/product_grid_skeleton';
+import { ListRowSkeleton, healthCardSkeleton, healthRowSkeleton } from './skeletons/list_row_skeleton';
+import { DoctorHeroSkeleton } from './skeletons/doctor_hero_skeleton';
+import { SlotGridSkeleton, DateStripSkeleton } from './skeletons/slot_grid_skeleton';
 
 interface SkeletonLoaderProps {
-  isLoading: boolean;
+  isLoading?: boolean;
   children?: React.ReactNode;
-  layout?: ICustomViewStyle[];
+  layout?: unknown;
   style?: StyleProp<ViewStyle>;
 }
 
-export function SkeletonLoader({ isLoading, children, layout, style }: SkeletonLoaderProps) {
-  const theme = useThemeStore(s => s.theme);
-  const c = theme.colors;
-  return (
-    <Skeleton
-      isLoading={isLoading}
-      boneColor={c.bone}
-      highlightColor={c.boneHighlight}
-      layout={layout}
-      containerStyle={style}
-      animationType="pulse"
-    >
-      {children}
-    </Skeleton>
-  );
+export function SkeletonLoader({ children, style }: SkeletonLoaderProps) {
+  return <SkeletonPlaceholder style={style}>{children}</SkeletonPlaceholder>;
 }
 
-export function productCardSkeleton(repeat = 4): ICustomViewStyle[] {
-  const acc: ICustomViewStyle[] = [];
-  for (let i = 0; i < repeat; i++) {
-    acc.push({ width: '46%', height: 80, borderRadius: 12, marginBottom: 12, marginRight: '4%' });
-    acc.push({ width: '46%', height: 80, borderRadius: 12, marginBottom: 12, marginRight: '4%' });
-    acc.push({ width: '46%', height: 14, borderRadius: 7, marginBottom: 8, marginRight: '4%' });
-    acc.push({ width: '46%', height: 14, borderRadius: 7, marginBottom: 16, marginRight: '4%' });
-  }
-  return acc;
+export function listRowSkeleton(count = 6) {
+  return <ListRowSkeleton count={count} />;
 }
 
-export function listRowSkeleton(repeat = 6): ICustomViewStyle[] {
-  const acc: ICustomViewStyle[] = [];
-  for (let i = 0; i < repeat; i++) {
-    acc.push({ width: 46, height: 46, borderRadius: 23, marginRight: 12, marginBottom: 16 });
-    acc.push({ width: '64%', height: 14, borderRadius: 7, marginBottom: 6 });
-    acc.push({ width: '42%', height: 11, borderRadius: 6, marginBottom: 16 });
-  }
-  return acc;
+export function sectionSkeleton(count = 3) {
+  return <SlotGridSkeleton count={count * 3} />;
 }
-
-export function sectionSkeleton(repeat = 3): ICustomViewStyle[] {
-  const acc: ICustomViewStyle[] = [];
-  for (let i = 0; i < repeat; i++) {
-    acc.push({ width: '38%', height: 13, borderRadius: 6, marginBottom: 10 });
-    acc.push({ width: '100%', height: 56, borderRadius: 14, marginBottom: 8 });
-    acc.push({ width: '100%', height: 56, borderRadius: 14, marginBottom: 8 });
-    acc.push({ width: '100%', height: 56, borderRadius: 14, marginBottom: 18 });
-  }
-  return acc;
-}
-
-export const productGridSkeleton = productCardSkeleton;
 
 export const rowSkeletonLayout = listRowSkeleton;
-
 export const cardSkeletonLayout = sectionSkeleton;
+
+export {
+  SkeletonBox,
+  SkeletonGroup,
+  SkeletonText,
+  SkeletonPlaceholder,
+  ProductGridSkeleton,
+  productCardSkeleton,
+  ListRowSkeleton,
+  healthCardSkeleton,
+  healthRowSkeleton,
+  DoctorHeroSkeleton,
+  SlotGridSkeleton,
+  DateStripSkeleton,
+};
+
+export default SkeletonLoader;

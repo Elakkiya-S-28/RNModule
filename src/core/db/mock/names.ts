@@ -1,4 +1,3 @@
-
 import { seededRandom } from '../../../core/util/format';
 
 export function mulberry32(seed: number): () => number {

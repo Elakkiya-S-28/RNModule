@@ -7,14 +7,21 @@ import { APP_NAME } from './AppBar';
 
 interface Props {
   right?: React.ReactNode;
+  subtitle?: string;
+  insetTop?: boolean;
 }
 
-export function AppHeader({ right }: Props) {
+export function AppHeader({ right, subtitle = 'Ayurveda · Wellness · Health', insetTop = true }: Props) {
   const insets = useSafeAreaInsets();
   const theme = useThemeStore(s => s.theme);
   const c = theme.colors;
   return (
-    <View style={[styles.container, { backgroundColor: c.background, paddingTop: insets.top + 8 }]}>
+    <View
+      style={[
+        styles.container,
+        { backgroundColor: c.background, paddingTop: insetTop ? insets.top + 8 : 8 },
+      ]}
+    >
       <View style={styles.row}>
         <View style={[styles.brandDot, { backgroundColor: c.accent }]}>
           <Text style={[styles.brandGlyph, { color: c.textInverse }]}>अ</Text>
@@ -24,7 +31,7 @@ export function AppHeader({ right }: Props) {
             {APP_NAME}
           </Text>
           <Text numberOfLines={1} style={[styles.subtitle, { color: c.textSecondary }]}>
-            Ayurveda · Wellness · Health
+            {subtitle}
           </Text>
         </View>
         {right ? <View style={styles.right}>{right}</View> : null}

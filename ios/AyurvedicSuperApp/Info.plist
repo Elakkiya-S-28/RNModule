@@ -26,15 +26,10 @@
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>UIAppFonts</key>
 	<array>
-		<string>Fraunces-400.ttf</string>
-		<string>Fraunces-500.ttf</string>
-		<string>Fraunces-600.ttf</string>
-		<string>Fraunces-700.ttf</string>
-		<string>Manrope-400.ttf</string>
-		<string>Manrope-500.ttf</string>
-		<string>Manrope-600.ttf</string>
-		<string>Manrope-700.ttf</string>
-		<string>Manrope-800.ttf</string>
+		<string>Inter-400.ttf</string>
+		<string>Inter-500.ttf</string>
+		<string>Inter-600.ttf</string>
+		<string>Inter-700.ttf</string>
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>

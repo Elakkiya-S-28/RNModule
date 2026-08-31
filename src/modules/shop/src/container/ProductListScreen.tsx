@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useThemeStore } from '../../../../core/theme/themeStore';
 import { useDebounce } from '../../../../core/hooks/useDebounce';
 import { useProductListStore } from '../store/productListStore';
@@ -13,6 +12,7 @@ import { AppHeader } from '../../../../core/ui/AppHeader';
 import { SearchBar } from '../../../../core/ui/SearchBar';
 import { EmptyState } from '../../../../core/ui/EmptyState';
 import { SkeletonLoader, productCardSkeleton } from '../../../../core/ui/SkeletonLoader';
+import { FadeInView, staggerDelay } from '../../../../core/util/motion';
 import { type as fontType } from '../../../../core/theme/fonts';
 
 interface Props {
@@ -24,7 +24,6 @@ interface Props {
 export function ProductListScreen({ onProductPress, onCartPress, onWishlistPress }: Props) {
   const theme = useThemeStore(s => s.theme);
   const c = theme.colors;
-  const insets = useSafeAreaInsets();
 
   const search = useProductListStore(s => s.search);
   const setSearch = useProductListStore(s => s.setSearch);
@@ -49,12 +48,6 @@ export function ProductListScreen({ onProductPress, onCartPress, onWishlistPress
   }, [debounced, search, setSearch]);
 
   useEffect(() => {
-    if (search === '' && searchText !== '' && !debounced) {
-      setSearchText('');
-    }
-  }, [search, searchText, debounced]);
-
-  useEffect(() => {
     load(true);
   }, [search, filters, load]);
 
@@ -63,9 +56,10 @@ export function ProductListScreen({ onProductPress, onCartPress, onWishlistPress
   }, [hasMore, loading, initialLoading, load]);
 
   const renderItem = useCallback(
-    ({ item }: { item: Product }) => (
+    ({ item, index }: { item: Product; index: number }) => (
       <ProductCard
         product={item}
+        entranceDelay={staggerDelay(index % 12)}
         onPress={() => onProductPress(item)}
         onWishlistToggle={wishlistToggle}
       />
@@ -149,7 +143,7 @@ export function ProductListScreen({ onProductPress, onCartPress, onWishlistPress
   );
 
   return (
-    <View style={[styles.root, { backgroundColor: c.background, paddingTop: insets.top }]}>
+    <View style={[styles.root, { backgroundColor: c.background }]}>
       <AppHeader
         right={
           <>
@@ -159,7 +153,7 @@ export function ProductListScreen({ onProductPress, onCartPress, onWishlistPress
               accessibilityLabel="Open wishlist"
               style={[styles.iconBtn, { borderColor: c.border }]}
             >
-              <Text style={{ fontSize: 16, color: c.terracotta }}>♥</Text>
+              <Text style={{ fontSize: 16, color: c.secondary }}>♥</Text>
             </Pressable>
             <Pressable
               onPress={onCartPress}
@@ -179,7 +173,7 @@ export function ProductListScreen({ onProductPress, onCartPress, onWishlistPress
       />
       {header}
       {initialLoading ? (
-        <SkeletonLoader isLoading layout={productCardSkeleton(3)} style={styles.skeleton} />
+        <FadeInView>{productCardSkeleton(4)}</FadeInView>
       ) : (
         <FlatList
           data={products}

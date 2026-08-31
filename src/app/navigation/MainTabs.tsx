@@ -6,6 +6,7 @@ import { ConsultationsNavigator } from '../../modules/consultations/src/navigati
 import { ShopNavigator } from '../../modules/shop/src/navigation/ShopNavigator';
 import { HealthNavigator } from '../../modules/health/src/navigation/HealthNavigator';
 import { useThemeStore } from '../../core/theme/themeStore';
+import { type as fontType } from '../../core/theme/fonts';
 
 const Tab = createBottomTabNavigator<MainTabParamList>();
 
@@ -25,8 +26,10 @@ export function MainTabs() {
         tabBarActiveTintColor: c.tabBarActive,
         tabBarInactiveTintColor: c.tabBarInactive,
         tabBarStyle: { backgroundColor: c.tabBarBg, borderTopColor: c.border },
+        tabBarLabelStyle: { ...fontType.label, fontSize: 11 },
+        tabBarIconStyle: { marginTop: 2 },
         tabBarIcon: ({ focused }) => (
-          <Text style={{ fontSize: 18, opacity: focused ? 1 : 0.6 }}>
+          <Text style={{ fontSize: 18, opacity: focused ? 1 : 0.55 }}>
             {TAB_ICONS[route.name]}
           </Text>
         ),

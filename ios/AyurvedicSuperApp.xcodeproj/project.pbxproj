@@ -7,20 +7,19 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3F9EEF883758D1D283CF2413 /* Fraunces-400.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BB4A9BD8913426B82A032FDA /* Fraunces-400.ttf */; };
-		E0EAAC3A6A5D0340C2D9AF49 /* Fraunces-500.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F572498A812BFBC0EBF94C00 /* Fraunces-500.ttf */; };
-		9E7352667391BACDBBF5A528 /* Fraunces-600.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ADA9E70AC5F8F4F76CAEC42A /* Fraunces-600.ttf */; };
-		26A2A648E4ADBF0A165666C8 /* Fraunces-700.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C4D174CCA09EE9010970C69E /* Fraunces-700.ttf */; };
-		B53D01EBEB2014E77CE84442 /* Manrope-400.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C71E058C466B6BFB376243C6 /* Manrope-400.ttf */; };
-		E71753D652FDED89CA02A1C5 /* Manrope-500.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6B5E6A27C89EFDE11E04F1F7 /* Manrope-500.ttf */; };
-		8CC28829B21CD6A4F72F18B4 /* Manrope-600.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A62A42109CF9665B687C72AC /* Manrope-600.ttf */; };
-		400241167A236861F940C58F /* Manrope-700.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F224607627209258F6078235 /* Manrope-700.ttf */; };
-		914A7CA76C114404DE0698E2 /* Manrope-800.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 887A3D80D9F0F81A227DDB7F /* Manrope-800.ttf */; };
 		0637F3CD907D5345EFCA5F7F /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */; };
 		0C80B921A6F3F58F76C31292 /* libPods-AyurvedicSuperApp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DCACB8F33CDC322A6C60F78 /* libPods-AyurvedicSuperApp.a */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
+		26A2A648E4ADBF0A165666C8 /* Inter-700.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C4D174CCA09EE9010970C69E /* Inter-700.ttf */; };
+		3F9EEF883758D1D283CF2413 /* Inter-400.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BB4A9BD8913426B82A032FDA /* Inter-400.ttf */; };
+		400241167A236861F940C58F /* Inter-700.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F224607627209258F6078235 /* Inter-700.ttf */; };
 		761780ED2CA45674006654EE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761780EC2CA45674006654EE /* AppDelegate.swift */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		8CC28829B21CD6A4F72F18B4 /* Inter-600.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A62A42109CF9665B687C72AC /* Inter-600.ttf */; };
+		9E7352667391BACDBBF5A528 /* Inter-600.ttf in Resources */ = {isa = PBXBuildFile; fileRef = ADA9E70AC5F8F4F76CAEC42A /* Inter-600.ttf */; };
+		B53D01EBEB2014E77CE84442 /* Inter-400.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C71E058C466B6BFB376243C6 /* Inter-400.ttf */; };
+		E0EAAC3A6A5D0340C2D9AF49 /* Inter-500.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F572498A812BFBC0EBF94C00 /* Inter-500.ttf */; };
+		E71753D652FDED89CA02A1C5 /* Inter-500.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6B5E6A27C89EFDE11E04F1F7 /* Inter-500.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,18 +30,17 @@
 		3B4392A12AC88292D35C810B /* Pods-AyurvedicSuperApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AyurvedicSuperApp.debug.xcconfig"; path = "Target Support Files/Pods-AyurvedicSuperApp/Pods-AyurvedicSuperApp.debug.xcconfig"; sourceTree = "<group>"; };
 		5709B34CF0A7D63546082F79 /* Pods-AyurvedicSuperApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AyurvedicSuperApp.release.xcconfig"; path = "Target Support Files/Pods-AyurvedicSuperApp/Pods-AyurvedicSuperApp.release.xcconfig"; sourceTree = "<group>"; };
 		5DCACB8F33CDC322A6C60F78 /* libPods-AyurvedicSuperApp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-AyurvedicSuperApp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		6B5E6A27C89EFDE11E04F1F7 /* Inter-500.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Inter-500.ttf"; path = "AyurvedicSuperApp/Fonts/Inter-500.ttf"; sourceTree = "<group>"; };
 		761780EC2CA45674006654EE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = AyurvedicSuperApp/AppDelegate.swift; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = AyurvedicSuperApp/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		A62A42109CF9665B687C72AC /* Inter-600.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Inter-600.ttf"; path = "AyurvedicSuperApp/Fonts/Inter-600.ttf"; sourceTree = "<group>"; };
+		ADA9E70AC5F8F4F76CAEC42A /* Inter-600.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Inter-600.ttf"; path = "AyurvedicSuperApp/Fonts/Inter-600.ttf"; sourceTree = "<group>"; };
+		BB4A9BD8913426B82A032FDA /* Inter-400.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Inter-400.ttf"; path = "AyurvedicSuperApp/Fonts/Inter-400.ttf"; sourceTree = "<group>"; };
+		C4D174CCA09EE9010970C69E /* Inter-700.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Inter-700.ttf"; path = "AyurvedicSuperApp/Fonts/Inter-700.ttf"; sourceTree = "<group>"; };
+		C71E058C466B6BFB376243C6 /* Inter-400.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Inter-400.ttf"; path = "AyurvedicSuperApp/Fonts/Inter-400.ttf"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
-		BB4A9BD8913426B82A032FDA /* Fraunces-400.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Fraunces-400.ttf"; path = AyurvedicSuperApp/Fonts/Fraunces-400.ttf; sourceTree = "<group>"; };
-		F572498A812BFBC0EBF94C00 /* Fraunces-500.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Fraunces-500.ttf"; path = AyurvedicSuperApp/Fonts/Fraunces-500.ttf; sourceTree = "<group>"; };
-		ADA9E70AC5F8F4F76CAEC42A /* Fraunces-600.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Fraunces-600.ttf"; path = AyurvedicSuperApp/Fonts/Fraunces-600.ttf; sourceTree = "<group>"; };
-		C4D174CCA09EE9010970C69E /* Fraunces-700.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Fraunces-700.ttf"; path = AyurvedicSuperApp/Fonts/Fraunces-700.ttf; sourceTree = "<group>"; };
-		C71E058C466B6BFB376243C6 /* Manrope-400.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Manrope-400.ttf"; path = AyurvedicSuperApp/Fonts/Manrope-400.ttf; sourceTree = "<group>"; };
-		6B5E6A27C89EFDE11E04F1F7 /* Manrope-500.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Manrope-500.ttf"; path = AyurvedicSuperApp/Fonts/Manrope-500.ttf; sourceTree = "<group>"; };
-		A62A42109CF9665B687C72AC /* Manrope-600.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Manrope-600.ttf"; path = AyurvedicSuperApp/Fonts/Manrope-600.ttf; sourceTree = "<group>"; };
-		F224607627209258F6078235 /* Manrope-700.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Manrope-700.ttf"; path = AyurvedicSuperApp/Fonts/Manrope-700.ttf; sourceTree = "<group>"; };
-		887A3D80D9F0F81A227DDB7F /* Manrope-800.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Manrope-800.ttf"; path = AyurvedicSuperApp/Fonts/Manrope-800.ttf; sourceTree = "<group>"; };
+		F224607627209258F6078235 /* Inter-700.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Inter-700.ttf"; path = "AyurvedicSuperApp/Fonts/Inter-700.ttf"; sourceTree = "<group>"; };
+		F572498A812BFBC0EBF94C00 /* Inter-500.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Inter-500.ttf"; path = "AyurvedicSuperApp/Fonts/Inter-500.ttf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -179,15 +177,14 @@
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				0637F3CD907D5345EFCA5F7F /* PrivacyInfo.xcprivacy in Resources */,
-				3F9EEF883758D1D283CF2413 /* Fraunces-400.ttf in Resources */,
-				E0EAAC3A6A5D0340C2D9AF49 /* Fraunces-500.ttf in Resources */,
-				9E7352667391BACDBBF5A528 /* Fraunces-600.ttf in Resources */,
-				26A2A648E4ADBF0A165666C8 /* Fraunces-700.ttf in Resources */,
-				B53D01EBEB2014E77CE84442 /* Manrope-400.ttf in Resources */,
-				E71753D652FDED89CA02A1C5 /* Manrope-500.ttf in Resources */,
-				8CC28829B21CD6A4F72F18B4 /* Manrope-600.ttf in Resources */,
-				400241167A236861F940C58F /* Manrope-700.ttf in Resources */,
-				914A7CA76C114404DE0698E2 /* Manrope-800.ttf in Resources */,
+				3F9EEF883758D1D283CF2413 /* Inter-400.ttf in Resources */,
+				E0EAAC3A6A5D0340C2D9AF49 /* Inter-500.ttf in Resources */,
+				9E7352667391BACDBBF5A528 /* Inter-600.ttf in Resources */,
+				26A2A648E4ADBF0A165666C8 /* Inter-700.ttf in Resources */,
+				B53D01EBEB2014E77CE84442 /* Inter-400.ttf in Resources */,
+				E71753D652FDED89CA02A1C5 /* Inter-500.ttf in Resources */,
+				8CC28829B21CD6A4F72F18B4 /* Inter-600.ttf in Resources */,
+				400241167A236861F940C58F /* Inter-700.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -5,7 +5,7 @@ import { AppBar } from '../../../../core/ui/AppBar';
 import { Avatar } from '../../../../core/ui/Avatar';
 import { Badge } from '../../../../core/ui/Badge';
 import { Button } from '../../../../core/ui/Button';
-import { SkeletonLoader, rowSkeletonLayout } from '../../../../core/ui/SkeletonLoader';
+import { SkeletonLoader, rowSkeletonLayout, SlotGridSkeleton } from '../../../../core/ui/SkeletonLoader';
 import { toast } from '../../../../core/toast';
 import { formatCurrency, formatTime12h, toISODate } from '../../../../core/util/format';
 import { type as fontType } from '../../../../core/theme/fonts';
@@ -123,7 +123,11 @@ export function DoctorDetailsScreen({ doctorId, onBack, onBooked }: Props) {
   }
 
   if (doctorLoading) {
-    return <SkeletonLoader isLoading layout={rowSkeletonLayout(5)} />;
+    return (
+      <SkeletonLoader>
+        {rowSkeletonLayout(5)}
+      </SkeletonLoader>
+    );
   }
   if (!doctor) {
     return (
@@ -157,21 +161,16 @@ export function DoctorDetailsScreen({ doctorId, onBack, onBooked }: Props) {
         </View>        <View style={styles.section}>
           <Text style={[styles.sectionTitle, { color: c.text }]}>Available slots</Text>
           <DateStrip dates={dates} selected={selectedDate} onSelect={setSelectedDate} />
-          <SkeletonLoader
-            isLoading={slotsLoading}
-            layout={[
-              { width: 90, height: 40, borderRadius: 10, marginRight: 8 },
-              { width: 90, height: 40, borderRadius: 10, marginRight: 8 },
-              { width: 90, height: 40, borderRadius: 10, marginRight: 8 },
-            ]}
-          >
+          {slotsLoading ? (
+            <SlotGridSkeleton count={9} />
+          ) : (
             <SlotGrid
               slots={slots}
               selectedId={booking?.id ?? null}
               unavailable={markBooked}
               onSelect={onSelectSlot}
             />
-          </SkeletonLoader>
+          )}
         </View>
 
         <View style={styles.section}>

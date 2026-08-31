@@ -3,9 +3,11 @@ import { Pressable, SectionList, StyleSheet, Text, TextInput, View } from 'react
 import { useThemeStore } from '../../../../core/theme/themeStore';
 import { useDebounce } from '../../../../core/hooks/useDebounce';
 import { useIsOnline } from '../../../../core/api/connectivity';
+import { AppHeader } from '../../../../core/ui/AppHeader';
 import { EmptyState } from '../../../../core/ui/EmptyState';
 import { Screen } from '../../../../core/ui/Screen';
-import { SkeletonLoader, rowSkeletonLayout } from '../../../../core/ui/SkeletonLoader';
+import { SkeletonLoader, healthCardSkeleton } from '../../../../core/ui/SkeletonLoader';
+import { FadeInView, staggerDelay } from '../../../../core/util/motion';
 import { useHealthStore } from '../store/healthStore';
 import { healthService } from '../services/healthApi';
 import { HealthRecord } from '../types/health';
@@ -25,8 +27,16 @@ export function HealthTimelineScreen({ onRecordPress }: Props) {
   const theme = useThemeStore(s => s.theme);
   const c = theme.colors;
   const online = useIsOnline();
-  const { groups, loading, error, search, setSearch, load, filters, toggleKind } =
-    useHealthStore();
+  const {
+    groups,
+    error,
+    search,
+    setSearch,
+    load,
+    filters,
+    toggleKind,
+    initialLoading,
+  } = useHealthStore();
   const [searchText, setSearchText] = useState('');
   const [filterVisible, setFilterVisible] = useState(false);
   const debounced = useDebounce(searchText, 300);
@@ -40,8 +50,12 @@ export function HealthTimelineScreen({ onRecordPress }: Props) {
   }, []);
 
   const renderItem = useCallback(
-    ({ item }: { item: HealthRecord }) => (
-      <HealthRecordRow record={item} onPress={() => onRecordPress(item)} />
+    ({ item, index }: { item: HealthRecord; index: number }) => (
+      <HealthRecordRow
+        record={item}
+        entranceDelay={staggerDelay(index % 8)}
+        onPress={() => onRecordPress(item)}
+      />
     ),
     [onRecordPress],
   );
@@ -51,53 +65,72 @@ export function HealthTimelineScreen({ onRecordPress }: Props) {
 
   return (
     <Screen padded={false}>
-      <SkeletonLoader isLoading={loading} layout={rowSkeletonLayout(6)}>
-        <View style={styles.searchWrap}>
-          <Text style={{ color: c.textMuted }}>🔍</Text>
-          <TextInput
-            value={searchText}
-            onChangeText={setSearchText}
-            placeholder="Search records, provider..."
-            placeholderTextColor={c.textMuted}
-            style={[styles.searchInput, { color: c.text }]}
-            accessibilityLabel="Search health records"
-          />
-        </View>
-        <View style={styles.filterRow}>
-          {KIND_FILTERS.map(k => {
-            const active = (filters.kinds ?? []).includes(k);
-            return (
-              <Pressable
-                key={k}
-                onPress={() => toggleKind(k)}
+      <AppHeader
+        insetTop={false}
+        right={
+          <Pressable
+            onPress={() => setFilterVisible(true)}
+            accessibilityRole="button"
+            accessibilityLabel="Open filters"
+            style={({ pressed }) => [
+              styles.filterBtn,
+              { borderColor: c.border, opacity: pressed ? 0.85 : 1 },
+            ]}
+          >
+            <Text style={[styles.filterText, { color: c.textSecondary }]}>⚙ Filter</Text>
+          </Pressable>
+        }
+      />
+      <View style={styles.searchWrap}>
+        <Text style={{ color: c.textMuted }}>🔍</Text>
+        <TextInput
+          value={searchText}
+          onChangeText={setSearchText}
+          placeholder="Search records, provider..."
+          placeholderTextColor={c.textMuted}
+          style={[styles.searchInput, { color: c.text, borderColor: c.border }]}
+          accessibilityLabel="Search health records"
+        />
+      </View>
+      <View style={styles.filterRow}>
+        {KIND_FILTERS.map(k => {
+          const active = (filters.kinds ?? []).includes(k);
+          return (
+            <Pressable
+              key={k}
+              onPress={() => toggleKind(k)}
+              style={[
+                styles.kindChip,
+                {
+                  backgroundColor: active ? c.primary : c.surface,
+                  borderColor: active ? c.primary : c.border,
+                },
+              ]}
+              accessibilityRole="button"
+              accessibilityState={{ selected: active }}
+            >
+              <Text
                 style={[
-                  styles.kindChip,
-                  {
-                    backgroundColor: active ? c.primary : c.surface,
-                    borderColor: active ? c.primary : c.border,
-                  },
+                  styles.kindChipText,
+                  { color: active ? c.textInverse : c.textSecondary },
                 ]}
-                accessibilityRole="button"
-                accessibilityState={{ selected: active }}
               >
-                <Text
-                  style={{
-                    color: active ? c.textInverse : c.textSecondary,
-                    fontSize: 12,
-                    fontWeight: '600',
-                  }}
-                >
-                  {healthService.KIND_LABELS[k]}
-                </Text>
-              </Pressable>
-            );
-          })}
+                {healthService.KIND_LABELS[k]}
+              </Text>
+            </Pressable>
+          );
+        })}
+      </View>
+      {error ? (
+        <View style={[styles.banner, { backgroundColor: `${c.danger}22` }]}>
+          <Text style={[styles.bannerText, { color: c.danger }]}>{error}</Text>
         </View>
-        {error ? (
-          <View style={[styles.banner, { backgroundColor: `${c.danger}22` }]}>
-            <Text style={{ color: c.danger }}>{error}</Text>
-          </View>
-        ) : null}
+      ) : null}
+      {initialLoading ? (
+        <FadeInView>
+          <SkeletonLoader style={styles.skeleton}>{healthCardSkeleton(6)}</SkeletonLoader>
+        </FadeInView>
+      ) : (
         <SectionList
           sections={sections}
           keyExtractor={r => r.id}
@@ -125,7 +158,7 @@ export function HealthTimelineScreen({ onRecordPress }: Props) {
           windowSize={8}
           showsVerticalScrollIndicator={false}
         />
-      </SkeletonLoader>
+      )}
       <HealthFilterModal visible={filterVisible} onClose={() => setFilterVisible(false)} />
     </Screen>
   );
@@ -140,8 +173,9 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
     marginTop: 8,
     marginBottom: 8,
+    backgroundColor: 'rgba(255, 255, 255, 0.75)',
   },
-  searchInput: { flex: 1, paddingVertical: 12, paddingHorizontal: 8, fontSize: 15 },
+  searchInput: { flex: 1, paddingVertical: 12, paddingHorizontal: 8, fontSize: 15, fontFamily: 'Inter' },
   filterRow: {
     flexDirection: 'row',
     flexWrap: 'wrap',
@@ -150,6 +184,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   kindChip: { borderWidth: 1, borderRadius: 999, paddingHorizontal: 12, paddingVertical: 6 },
+  kindChipText: { fontSize: 12, fontWeight: '600', fontFamily: 'Inter SemiBold' },
   groupLabel: {
     fontSize: 14,
     fontWeight: '800',
@@ -157,9 +192,19 @@ const styles = StyleSheet.create({
     marginBottom: 6,
     textTransform: 'uppercase',
     letterSpacing: 0.5,
+    fontFamily: 'Inter SemiBold',
   },
   banner: { borderRadius: 10, padding: 10, marginHorizontal: 16, marginBottom: 8 },
+  bannerText: { fontFamily: 'Inter Medium' },
+  filterBtn: {
+    borderWidth: 1,
+    borderRadius: 999,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+  },
+  filterText: { fontSize: 13, fontFamily: 'Inter Medium' },
   content: { paddingHorizontal: 16, paddingBottom: 32 },
-  footer: { textAlign: 'center', marginTop: 8, fontSize: 11 },
+  footer: { textAlign: 'center', marginTop: 8, fontSize: 11, fontFamily: 'Inter' },
+  skeleton: { paddingHorizontal: 16, paddingTop: 8 },
 });
 export default HealthTimelineScreen;

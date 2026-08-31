@@ -5,22 +5,30 @@ import { Doctor } from '../types/ct';
 import { Avatar } from '../../../../core/ui/Avatar';
 import { Badge } from '../../../../core/ui/Badge';
 import { formatCurrency } from '../../../../core/util/format';
+import { FadeInView, staggerDelay } from '../../../../core/util/motion';
 interface Props {
   doctor: Doctor;
   onPress?: () => void;
+  entranceDelay?: number;
 }
-export const DoctorCard = React.memo(function DoctorCard({ doctor, onPress }: Props) {
+export const DoctorCard = React.memo(function DoctorCard({ doctor, onPress, entranceDelay = 0 }: Props) {
   const theme = useThemeStore(s => s.theme);
   const c = theme.colors;
+  const surfaceStyle =
+    theme.mode === 'dark'
+      ? { backgroundColor: c.surface, borderWidth: 1, borderColor: c.border }
+      : { backgroundColor: c.surface, ...theme.shadow.card, shadowColor: c.shadowPrimary };
 
   return (
+    <FadeInView delay={entranceDelay}>
     <Pressable
       onPress={onPress}
       accessibilityRole="button"
       accessibilityLabel={doctor.name}
       style={({ pressed }) => [
         styles.card,
-        { backgroundColor: c.surface, borderColor: c.border, opacity: pressed ? 0.92 : 1 },
+        surfaceStyle,
+        { opacity: pressed ? 0.92 : 1 },
       ]}
     >
       <Avatar name={doctor.name} uri={doctor.avatarUrl} size={52} />
@@ -42,13 +50,13 @@ export const DoctorCard = React.memo(function DoctorCard({ doctor, onPress }: Pr
       </View>
       <Text style={{ color: c.textMuted, marginLeft: 4 }}>›</Text>
     </Pressable>
+    </FadeInView>
   );
 });
 const styles = StyleSheet.create({
   card: {
     flexDirection: 'row',
     alignItems: 'center',
-    borderWidth: 1,
     borderRadius: 16,
     padding: 12,
     marginBottom: 10,

@@ -36,7 +36,7 @@ export function Avatar({ name, uri, size = 48 }: Props) {
 }
 
 const styles = StyleSheet.create({
-  img: { borderRadius: 999, backgroundColor: '#DDD' },
+  img: { borderRadius: 999, backgroundColor: 'rgba(127, 127, 127, 0.18)' },
   fallback: { alignItems: 'center', justifyContent: 'center' },
   initials: { fontWeight: '700' },
 });

@@ -1,4 +1,3 @@
-
 export function formatCurrency(value: number, currency = '₹'): string {
   if (!Number.isFinite(value)) return `${currency}0`;
   return `${currency}${value.toLocaleString('en-IN', {

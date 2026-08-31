@@ -13,6 +13,10 @@ interface Props {
 export function Card({ children, style, onPress, title }: Props) {
   const theme = useThemeStore(s => s.theme);
   const c = theme.colors;
+  const surfaceStyle =
+    theme.mode === 'dark'
+      ? { backgroundColor: c.surface, borderWidth: 1, borderColor: c.border }
+      : { backgroundColor: c.surface, ...theme.shadow.card, shadowColor: c.shadowPrimary };
 
   const inner = (
     <>
@@ -23,11 +27,7 @@ export function Card({ children, style, onPress, title }: Props) {
     </>
   );
 
-  const cardStyle = [
-    styles.card,
-    { backgroundColor: c.surface, borderColor: c.border },
-    style,
-  ];
+  const cardStyle = [styles.card, surfaceStyle, style];
 
   if (onPress) {
     return (
@@ -45,8 +45,7 @@ export function Card({ children, style, onPress, title }: Props) {
 
 const styles = StyleSheet.create({
   card: {
-    borderWidth: 1,
-    borderRadius: 16,
+    borderRadius: 18,
     padding: 16,
     marginBottom: 12,
   },

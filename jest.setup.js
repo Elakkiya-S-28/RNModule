@@ -1,13 +1,3 @@
-/* eslint-disable */
-/**
- * Jest global setup.
- *
- * Mocks React Native native modules that aren't linked in a plain Jest
- * environment (NetInfo, AsyncStorage) so the app and its tests can run
- * without rebuilding native pods.
- */
-
-// NetInfo
 jest.mock('@react-native-community/netinfo', () => ({
   addEventListener: jest.fn(() => jest.fn()),
   fetch: jest.fn(() =>
@@ -15,8 +5,6 @@ jest.mock('@react-native-community/netinfo', () => ({
   ),
 }));
 
-// react-native-reanimated-skeleton pulls in native-only worklets that cannot
-// run under Jest; stub it with a static View-based placeholder.
 jest.mock('react-native-reanimated-skeleton', () => {
   const React = require('react');
   const { View } = require('react-native');

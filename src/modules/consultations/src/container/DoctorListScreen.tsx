@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useThemeStore } from '../../../../core/theme/themeStore';
 import { useDebounce } from '../../../../core/hooks/useDebounce';
 import { useDoctorListStore } from '../store/doctorListStore';
@@ -14,6 +13,7 @@ import { SkeletonLoader, listRowSkeleton } from '../../../../core/ui/SkeletonLoa
 import { formatCompact } from '../../../../core/util/format';
 import { useIsOnline } from '../../../../core/api/connectivity';
 import { type as fontType } from '../../../../core/theme/fonts';
+import { staggerDelay } from '../../../../core/util/motion';
 
 interface Props {
   onDoctorPress: (doctor: Doctor) => void;
@@ -23,7 +23,6 @@ interface Props {
 export function DoctorListScreen({ onDoctorPress, onUpcomingPress }: Props) {
   const theme = useThemeStore(s => s.theme);
   const c = theme.colors;
-  const insets = useSafeAreaInsets();
   const online = useIsOnline();
 
   const search = useDoctorListStore(s => s.search);
@@ -47,12 +46,6 @@ export function DoctorListScreen({ onDoctorPress, onUpcomingPress }: Props) {
   }, [debouncedSearch]);
 
   useEffect(() => {
-    if (search === '' && searchText !== '' && !debouncedSearch) {
-      setSearchText('');
-    }
-  }, [search]);
-
-  useEffect(() => {
     listDoctors(true);
   }, [search, filters, listDoctors]);
 
@@ -61,8 +54,12 @@ export function DoctorListScreen({ onDoctorPress, onUpcomingPress }: Props) {
   }, [hasMore, loading, initialLoading, listDoctors]);
 
   const renderItem = useCallback(
-    ({ item }: { item: Doctor }) => (
-      <DoctorCard doctor={item} onPress={() => onDoctorPress(item)} />
+    ({ item, index }: { item: Doctor; index: number }) => (
+      <DoctorCard
+        doctor={item}
+        entranceDelay={staggerDelay(index % 10)}
+        onPress={() => onDoctorPress(item)}
+      />
     ),
     [onDoctorPress],
   );
@@ -142,7 +139,7 @@ export function DoctorListScreen({ onDoctorPress, onUpcomingPress }: Props) {
   );
 
   return (
-    <View style={[styles.root, { backgroundColor: c.background, paddingTop: insets.top }]}>
+    <View style={[styles.root, { backgroundColor: c.background }]}>
       <AppHeader
         right={
           <Pressable
@@ -157,7 +154,7 @@ export function DoctorListScreen({ onDoctorPress, onUpcomingPress }: Props) {
       />
       {header}
       {initialLoading ? (
-        <SkeletonLoader isLoading layout={listRowSkeleton(6)} style={styles.skeleton} />
+        <SkeletonLoader style={styles.skeleton}>{listRowSkeleton(6)}</SkeletonLoader>
       ) : (
         <FlatList
           data={doctors}

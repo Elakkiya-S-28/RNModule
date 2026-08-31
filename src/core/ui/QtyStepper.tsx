@@ -1,7 +1,8 @@
-import React from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import React, { useState } from 'react';
+import { Animated, Pressable, StyleSheet, Text, View } from 'react-native';
 import { useThemeStore } from '../theme/themeStore';
 import { type as fontType } from '../theme/fonts';
+import { usePop } from '../util/motion';
 
 interface Props {
   quantity: number;
@@ -13,12 +14,18 @@ interface Props {
 export function QtyStepper({ quantity, min = 1, max = 99, onChange }: Props) {
   const theme = useThemeStore(s => s.theme);
   const c = theme.colors;
+  const [bumped, setBumped] = useState(false);
+  const pop = usePop(bumped);
   const atMin = quantity <= min;
   const atMax = quantity >= max;
+  function change(next: number) {
+    setBumped(true);
+    onChange(next);
+  }
   return (
     <View style={[styles.row, { borderColor: c.border }]}>
       <Pressable
-        onPress={() => !atMin && onChange(quantity - 1)}
+        onPress={() => !atMin && change(quantity - 1)}
         disabled={atMin}
         accessibilityRole="button"
         accessibilityLabel="Decrease quantity"
@@ -30,14 +37,9 @@ export function QtyStepper({ quantity, min = 1, max = 99, onChange }: Props) {
       >
         <Text style={[styles.btnText, { color: c.text }]}>−</Text>
       </Pressable>
-      <Text
-        accessibilityLiveRegion="polite"
-        style={[styles.qty, { color: c.text, minWidth: 34, textAlign: 'center' }]}
-      >
-        {quantity}
-      </Text>
+      <AnimatedQty pop={pop} quantity={quantity} />
       <Pressable
-        onPress={() => !atMax && onChange(quantity + 1)}
+        onPress={() => !atMax && change(quantity + 1)}
         disabled={atMax}
         accessibilityRole="button"
         accessibilityLabel="Increase quantity"
@@ -50,6 +52,22 @@ export function QtyStepper({ quantity, min = 1, max = 99, onChange }: Props) {
         <Text style={[styles.btnText, { color: c.textInverse }]}>+</Text>
       </Pressable>
     </View>
+  );
+}
+
+function AnimatedQty({ pop, quantity }: { pop: ReturnType<typeof usePop>; quantity: number }) {
+  const theme = useThemeStore(s => s.theme);
+  const c = theme.colors;
+    return (
+    <Animated.Text
+      accessibilityLiveRegion="polite"
+      style={[
+        styles.qty,
+        { color: c.text, minWidth: 34, textAlign: 'center', transform: [{ scale: pop }] },
+      ]}
+    >
+      {quantity}
+    </Animated.Text>
   );
 }
 
